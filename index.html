@@ -36,7 +36,6 @@
       grid-template-rows: auto 1fr;
     }
 
-    /* Header */
     header {
       padding: 16px 24px;
       border-bottom: 1px solid var(--border);
@@ -67,12 +66,9 @@
     .logo-text {
       font-size: 18px;
       font-weight: 600;
-      letter-spacing: -0.02em;
     }
 
-    .logo-text span {
-      color: var(--gold);
-    }
+    .logo-text span { color: var(--gold); }
 
     .header-actions {
       display: flex;
@@ -80,25 +76,24 @@
       gap: 12px;
     }
 
-    .worker-status {
+    .status-badge {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      color: var(--text-muted);
+      gap: 6px;
       padding: 6px 12px;
-      background: var(--surface);
-      border-radius: 6px;
+      background: rgba(48,209,88,0.15);
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--green);
+      font-weight: 500;
     }
 
     .status-dot {
       width: 6px;
       height: 6px;
-      border-radius: 50%;
       background: var(--green);
+      border-radius: 50%;
     }
-
-    .status-dot.offline { background: var(--text-muted); }
 
     .btn {
       padding: 8px 16px;
@@ -111,23 +106,18 @@
       color: var(--text);
       font-family: inherit;
       transition: all 0.15s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
     .btn:hover { background: var(--surface-hover); }
     .btn-gold { background: var(--gold); color: #000; border-color: var(--gold); font-weight: 600; }
     .btn-gold:hover { background: #D4B876; }
 
-    /* Main Layout */
     .main {
       display: grid;
       grid-template-columns: 380px 1fr;
       overflow: hidden;
     }
 
-    /* Sidebar - Topics */
     .sidebar {
       border-right: 1px solid var(--border);
       display: flex;
@@ -168,7 +158,7 @@
       transition: all 0.15s;
     }
 
-    .cat-tab:hover { color: var(--text); background: var(--surface-hover); }
+    .cat-tab:hover { color: var(--text); }
     .cat-tab.active { background: var(--gold); color: #000; }
 
     .topics-list {
@@ -182,7 +172,7 @@
 
     .topic-card {
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 2px solid var(--border);
       border-radius: 10px;
       padding: 14px;
       cursor: pointer;
@@ -191,7 +181,6 @@
 
     .topic-card:hover { background: var(--surface-hover); border-color: rgba(255,255,255,0.2); }
     .topic-card.selected { border-color: var(--gold); background: rgba(201,169,98,0.1); }
-    .topic-card.generating { opacity: 0.6; pointer-events: none; }
 
     .topic-category {
       font-size: 10px;
@@ -224,7 +213,6 @@
       font-weight: 500;
     }
 
-    /* Content Panel */
     .content-panel {
       display: flex;
       flex-direction: column;
@@ -276,21 +264,9 @@
       color: var(--text-muted);
     }
 
-    .empty-icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-      opacity: 0.4;
-    }
-
-    .empty-text {
-      font-size: 14px;
-      margin-bottom: 4px;
-      color: var(--text-secondary);
-    }
-
-    .empty-hint {
-      font-size: 12px;
-    }
+    .empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
+    .empty-text { font-size: 14px; color: var(--text-secondary); margin-bottom: 4px; }
+    .empty-hint { font-size: 12px; }
 
     .content-card {
       background: var(--surface);
@@ -334,21 +310,21 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
+      flex-wrap: wrap;
     }
 
-    .hashtags-text {
-      flex: 1;
-      word-break: break-word;
-    }
+    .hashtags-text { flex: 1; word-break: break-word; }
 
     .copy-all-btn {
       width: 100%;
       padding: 16px;
       font-size: 14px;
+      display: flex;
+      align-items: center;
       justify-content: center;
+      gap: 8px;
     }
 
-    /* Loading */
     .loading {
       display: flex;
       flex-direction: column;
@@ -370,7 +346,6 @@
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Toast */
     .toast {
       position: fixed;
       bottom: 24px;
@@ -388,91 +363,6 @@
     }
 
     .toast.show { opacity: 1; transform: translateY(0); }
-    .toast.error { background: #FF453A; color: #fff; }
-
-    /* Settings Modal */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(10px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-    }
-
-    .modal-overlay.open { display: flex; }
-
-    .modal {
-      background: #141414;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 24px;
-      width: 440px;
-      max-width: 90vw;
-    }
-
-    .modal h3 {
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-
-    .modal p {
-      font-size: 13px;
-      color: var(--text-secondary);
-      line-height: 1.5;
-      margin-bottom: 20px;
-    }
-
-    .modal code {
-      background: var(--surface);
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 12px;
-    }
-
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-secondary);
-      margin-bottom: 8px;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 12px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      font-size: 14px;
-      font-family: inherit;
-    }
-
-    .form-group input:focus {
-      outline: none;
-      border-color: var(--gold);
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .modal-actions .btn {
-      flex: 1;
-      justify-content: center;
-      padding: 12px;
-    }
 
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -487,11 +377,10 @@
         <div class="logo-text">Stitch <span>Intelligence</span></div>
       </div>
       <div class="header-actions">
-        <div class="worker-status">
-          <span class="status-dot" id="statusDot"></span>
-          <span id="statusText">Checking...</span>
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          Ready - No API needed
         </div>
-        <button class="btn" id="btnSettings">⚙️ Setup</button>
         <button class="btn" id="btnRefresh">↻ Refresh</button>
       </div>
     </header>
@@ -509,10 +398,7 @@
           </div>
         </div>
         <div class="topics-list" id="topicsList">
-          <div class="loading">
-            <div class="spinner"></div>
-            <span>Loading trends...</span>
-          </div>
+          <div class="loading"><div class="spinner"></div><span>Loading trends...</span></div>
         </div>
       </div>
 
@@ -529,25 +415,9 @@
           <div class="empty-state">
             <div class="empty-icon">✨</div>
             <div class="empty-text">Select a trending topic</div>
-            <div class="empty-hint">AI will generate unique content for each platform</div>
+            <div class="empty-hint">Content generates instantly</div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Settings Modal -->
-  <div class="modal-overlay" id="settingsModal">
-    <div class="modal">
-      <h3>Content Generator Setup</h3>
-      <p>Enter your Cloudflare Worker URL. Deploy the worker from <code>/cloudflare-worker</code> folder, then paste the URL here.</p>
-      <div class="form-group">
-        <label>Worker URL</label>
-        <input type="url" id="workerUrl" placeholder="https://stitch-content-generator.YOUR-SUBDOMAIN.workers.dev">
-      </div>
-      <div class="modal-actions">
-        <button class="btn" id="btnCancelSettings">Cancel</button>
-        <button class="btn btn-gold" id="btnSaveSettings">Save & Test</button>
       </div>
     </div>
   </div>
@@ -555,46 +425,12 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    // ═══════════════════════════════════════════════════════════════════
-    // STATE
-    // ═══════════════════════════════════════════════════════════════════
     const state = {
-      workerUrl: localStorage.getItem('worker_url') || '',
       topics: [],
       selectedTopic: null,
       platform: 'linkedin',
       content: {},
       category: 'all'
-    };
-
-    // ═══════════════════════════════════════════════════════════════════
-    // TREND SOURCES - Men's Luxury Lifestyle
-    // ═══════════════════════════════════════════════════════════════════
-    const SOURCES = {
-      fashion: [
-        'mens fashion trends',
-        'bespoke suit style',
-        'designer menswear',
-        'fashion week mens'
-      ],
-      watches: [
-        'luxury watches news',
-        'Rolex Patek Philippe',
-        'watch collector',
-        'horology trends'
-      ],
-      lifestyle: [
-        'luxury cars lifestyle',
-        'gentleman lifestyle',
-        'luxury gadgets tech',
-        'premium accessories'
-      ],
-      style: [
-        'celebrity mens style',
-        'athlete fashion',
-        'best dressed men',
-        'red carpet mens fashion'
-      ]
     };
 
     const CATEGORY_LABELS = {
@@ -604,9 +440,141 @@
       style: '⭐ Style Icons'
     };
 
-    // ═══════════════════════════════════════════════════════════════════
-    // FETCH TOPICS
-    // ═══════════════════════════════════════════════════════════════════
+    // Dynamic content generators
+    const CONTENT_GENERATORS = {
+      linkedin: (topic, cat) => {
+        const hooks = [
+          `The conversation around ${topic.toLowerCase()} is shifting.`,
+          `Here's what the industry isn't talking about: ${topic}`,
+          `${topic} — and why it matters for your personal brand.`,
+          `I've been researching ${topic.toLowerCase()}. Here's what stands out.`,
+          `The intersection of style and success: ${topic}`
+        ];
+        const hook = hooks[Math.floor(Math.random() * hooks.length)];
+
+        const insights = [
+          "✅ Quality craftsmanship signals attention to detail",
+          "✅ First impressions in business are formed in seconds",
+          "✅ Personal style reflects professional standards",
+          "✅ Investment pieces outperform fast fashion long-term",
+          "✅ The details separate good from exceptional"
+        ];
+        const selectedInsights = insights.sort(() => 0.5 - Math.random()).slice(0, 3);
+
+        const ctas = [
+          "What's your take on this trend?",
+          "How does this align with your professional image?",
+          "Curious to hear your thoughts below 👇",
+          "Is this something you've noticed in your industry?",
+          "Share your perspective in the comments."
+        ];
+        const cta = ctas[Math.floor(Math.random() * ctas.length)];
+
+        return {
+          text: `${hook}\n\nIn the world of men's style, this represents more than aesthetics — it's about the message you send before you speak.\n\n${selectedInsights.join('\n')}\n\nWhether you're in the boardroom or building relationships, these details matter.\n\n${cta}`,
+          hashtags: '#MensStyle #ProfessionalImage #PersonalBranding #ExecutivePresence #Menswear'
+        };
+      },
+
+      instagram: (topic, cat) => {
+        const openers = [
+          `${topic} ✨`,
+          `This is what we're talking about 🔥`,
+          `Style update: ${topic}`,
+          `The details matter 👀`,
+          `Elevate your game 📈`
+        ];
+        const opener = openers[Math.floor(Math.random() * openers.length)];
+
+        const bodies = [
+          "When craftsmanship meets confidence.\n\nEvery detail tells a story →",
+          "This is what separates good from exceptional.\n\nThe difference is in the details →",
+          "Style isn't just what you wear.\nIt's how you show up. ✨",
+          "Quality never goes out of style.\n\nInvest in pieces that last →"
+        ];
+        const body = bodies[Math.floor(Math.random() * bodies.length)];
+
+        const closes = [
+          "Save this for inspiration 📌",
+          "Double tap if you agree 👊",
+          "Tag someone who needs to see this",
+          "Which detail catches your eye?",
+          "Your move 🎯"
+        ];
+        const close = closes[Math.floor(Math.random() * closes.length)];
+
+        return {
+          text: `${opener}\n\n${body}\n\n${close}`,
+          hashtags: '#MensStyle #Menswear #LuxuryLifestyle #GentlemanStyle #BespokeStyle #Dapper #StyleInspo #MensFashion #LuxuryFashion #ClassicStyle #Tailoring #SuitStyle #WellDressed #Elegance #Sartorial #MensWear #StyleTips #FashionMen #LuxuryMenswear #Refined'
+        };
+      },
+
+      facebook: (topic, cat) => {
+        const intros = [
+          `Interesting trend I've been following: ${topic}`,
+          `Something worth discussing: ${topic}`,
+          `${topic} — what do you all think?`,
+          `Came across this and had to share: ${topic}`
+        ];
+        const intro = intros[Math.floor(Math.random() * intros.length)];
+
+        const middles = [
+          "It's fascinating how the small details in men's style can make such a significant impact on perception. Whether it's the cut of a jacket, the quality of a timepiece, or the shine of well-maintained shoes — these elements communicate something beyond words.",
+          "There's something to be said about investing in quality over quantity. The pieces that last, that age well, that tell a story — those are the ones worth considering.",
+          "What strikes me most is how timeless style principles continue to hold true, even as trends come and go. The fundamentals of fit, quality, and attention to detail remain constant."
+        ];
+        const middle = middles[Math.floor(Math.random() * middles.length)];
+
+        const closes = [
+          "What's been your experience with this? Would love to hear different perspectives!",
+          "Anyone else noticing this trend? Share your thoughts below!",
+          "Curious what this community thinks. Drop a comment! 👇",
+          "Feel free to share if this resonates with you."
+        ];
+        const close = closes[Math.floor(Math.random() * closes.length)];
+
+        return {
+          text: `${intro}\n\n${middle}\n\n${close}`,
+          hashtags: '#MensStyle #Fashion #Lifestyle'
+        };
+      },
+
+      blog: (topic, cat) => {
+        const title = topic.includes(':') ? topic : `${topic}: A Modern Gentleman's Perspective`;
+
+        return {
+          text: `# ${title}
+
+## The Evolution of Men's Style
+
+In today's world, ${topic.toLowerCase()} represents more than a passing trend — it reflects a broader shift in how modern professionals approach personal presentation.
+
+The discerning gentleman understands that every detail contributes to the overall impression. From the boardroom to social gatherings, these choices communicate competence, attention to detail, and respect for oneself and others.
+
+## Why This Matters
+
+**Quality Over Quantity**
+The most well-dressed men aren't those with overflowing closets, but those who curate carefully. Each piece should serve a purpose and stand the test of time.
+
+**The Details Tell the Story**
+A well-fitted jacket, properly maintained shoes, a timepiece that reflects your values — these aren't vanity. They're tools of communication.
+
+**Investment Thinking**
+Consider the cost-per-wear. A bespoke suit worn for decades outvalues dozens of disposable alternatives.
+
+## Moving Forward
+
+As you consider your own approach to style, remember: authenticity trumps trends. Find what works for your lifestyle, your profession, and your personality.
+
+The goal isn't to follow fashion — it's to develop a personal style that serves your ambitions.
+
+*What aspects of this resonate with your own style journey? We'd love to hear from you.*`,
+          hashtags: '#MensStyle #BespokeStyle #Menswear #GentlemanStyle #StyleGuide'
+        };
+      }
+    };
+
+    // Fetch trending topics
     async function fetchGoogleNews(query, category) {
       const results = [];
       try {
@@ -620,19 +588,12 @@
             if (i < 2) {
               const title = (item.querySelector('title')?.textContent || '').replace(/ - .*$/, '');
               if (title.length > 20) {
-                results.push({
-                  title,
-                  category,
-                  source: 'Google News',
-                  time: 'Today'
-                });
+                results.push({ title, category, source: 'Google News', time: 'Today' });
               }
             }
           });
         }
-      } catch (e) {
-        console.warn('News fetch failed:', query);
-      }
+      } catch (e) {}
       return results;
     }
 
@@ -654,56 +615,46 @@
             }
           });
         }
-      } catch (e) {
-        console.warn('Reddit fetch failed:', subreddit);
-      }
+      } catch (e) {}
       return results;
     }
 
     async function fetchAllTopics() {
-      const allTopics = [];
-
-      // Fetch from multiple sources
       const fetches = [
-        // Fashion
-        fetchGoogleNews('mens fashion trends 2024', 'fashion'),
-        fetchGoogleNews('bespoke tailoring style', 'fashion'),
-        fetchReddit('malefashionadvice', 'fashion'),
-
-        // Watches
+        fetchGoogleNews('mens fashion trends', 'fashion'),
         fetchGoogleNews('luxury watches Rolex Omega', 'watches'),
-        fetchReddit('Watches', 'watches'),
-
-        // Lifestyle
         fetchGoogleNews('luxury cars lifestyle', 'lifestyle'),
-        fetchGoogleNews('premium gadgets', 'lifestyle'),
-
-        // Style Icons
-        fetchGoogleNews('celebrity mens style red carpet', 'style'),
-        fetchGoogleNews('athlete fashion NBA', 'style')
+        fetchGoogleNews('celebrity mens style', 'style'),
+        fetchReddit('malefashionadvice', 'fashion'),
+        fetchReddit('Watches', 'watches'),
+        fetchReddit('cars', 'lifestyle')
       ];
 
       const results = await Promise.all(fetches);
-      results.forEach(r => allTopics.push(...r));
+      const all = results.flat();
 
-      // Deduplicate and sort
       const seen = new Set();
-      const unique = allTopics.filter(t => {
-        const key = t.title.toLowerCase().slice(0, 40);
+      const unique = all.filter(t => {
+        const key = t.title.toLowerCase().slice(0, 30);
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
       });
 
-      // Sort by score if available, otherwise keep order
       unique.sort((a, b) => (b.score || 50) - (a.score || 50));
+
+      if (unique.length < 5) {
+        unique.push(
+          { title: "The Art of the Perfect Suit Fit in 2024", category: "fashion", source: "Editorial", time: "Featured" },
+          { title: "Rolex vs Omega: The Ultimate Comparison", category: "watches", source: "Editorial", time: "Featured" },
+          { title: "Why Executives Are Returning to Classic Style", category: "style", source: "Editorial", time: "Featured" },
+          { title: "The Gentleman's Guide to Luxury Accessories", category: "lifestyle", source: "Editorial", time: "Featured" }
+        );
+      }
 
       return unique.slice(0, 12);
     }
 
-    // ═══════════════════════════════════════════════════════════════════
-    // RENDER TOPICS
-    // ═══════════════════════════════════════════════════════════════════
     function renderTopics() {
       const list = document.getElementById('topicsList');
       let topics = state.topics;
@@ -733,73 +684,27 @@
       });
     }
 
-    // ═══════════════════════════════════════════════════════════════════
-    // SELECT TOPIC & GENERATE
-    // ═══════════════════════════════════════════════════════════════════
-    async function selectTopic(index) {
-      if (!state.workerUrl) {
-        document.getElementById('settingsModal').classList.add('open');
-        return;
-      }
-
+    function selectTopic(index) {
       state.selectedTopic = index;
-      state.content = {};
-      renderTopics();
-
       const topic = state.topics[index];
 
-      document.getElementById('contentBody').innerHTML = `
-        <div class="loading">
-          <div class="spinner"></div>
-          <span>Generating content for all platforms...</span>
-        </div>
-      `;
+      // Generate content for all platforms
+      state.content = {
+        linkedin: CONTENT_GENERATORS.linkedin(topic.title, topic.category),
+        instagram: CONTENT_GENERATORS.instagram(topic.title, topic.category),
+        facebook: CONTENT_GENERATORS.facebook(topic.title, topic.category),
+        blog: CONTENT_GENERATORS.blog(topic.title, topic.category)
+      };
 
-      // Generate for all platforms
-      const platforms = ['linkedin', 'instagram', 'facebook', 'blog'];
-
-      for (const platform of platforms) {
-        try {
-          const res = await fetch(state.workerUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              topic: topic.title,
-              category: topic.category,
-              platform
-            })
-          });
-
-          if (res.ok) {
-            const data = await res.json();
-            state.content[platform] = data;
-          } else {
-            state.content[platform] = { text: 'Failed to generate. Check worker setup.', hashtags: '' };
-          }
-        } catch (e) {
-          state.content[platform] = { text: 'Error connecting to worker. Check URL.', hashtags: '' };
-        }
-      }
-
+      renderTopics();
       renderContent();
     }
 
-    // ═══════════════════════════════════════════════════════════════════
-    // RENDER CONTENT
-    // ═══════════════════════════════════════════════════════════════════
     function renderContent() {
       const content = state.content[state.platform];
-      if (!content) {
-        document.getElementById('contentBody').innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">⏳</div>
-            <div class="empty-text">Generating...</div>
-          </div>
-        `;
-        return;
-      }
+      if (!content) return;
 
-      const platformNames = {
+      const names = {
         linkedin: '💼 LinkedIn Post',
         instagram: '📸 Instagram Caption',
         facebook: '👥 Facebook Post',
@@ -809,16 +714,14 @@
       document.getElementById('contentBody').innerHTML = `
         <div class="content-card">
           <div class="content-card-header">
-            <span class="card-label">${platformNames[state.platform]}</span>
+            <span class="card-label">${names[state.platform]}</span>
             <button class="btn" onclick="copyText()">📋 Copy</button>
           </div>
-          <div class="content-text">${content.text || ''}</div>
-          ${content.hashtags ? `
-            <div class="content-hashtags">
-              <span class="hashtags-text">${content.hashtags}</span>
-              <button class="btn" onclick="copyHashtags()">📋</button>
-            </div>
-          ` : ''}
+          <div class="content-text">${content.text}</div>
+          <div class="content-hashtags">
+            <span class="hashtags-text">${content.hashtags}</span>
+            <button class="btn" onclick="copyHashtags()">📋</button>
+          </div>
         </div>
         <button class="btn btn-gold copy-all-btn" onclick="copyAll()">
           📋 Copy Everything — Ready to Post
@@ -826,98 +729,45 @@
       `;
     }
 
-    // ═══════════════════════════════════════════════════════════════════
-    // COPY FUNCTIONS
-    // ═══════════════════════════════════════════════════════════════════
     function copyText() {
       const c = state.content[state.platform];
-      if (c?.text) {
-        navigator.clipboard.writeText(c.text);
-        showToast('Text copied!');
-      }
+      if (c?.text) { navigator.clipboard.writeText(c.text); showToast('Text copied!'); }
     }
 
     function copyHashtags() {
       const c = state.content[state.platform];
-      if (c?.hashtags) {
-        navigator.clipboard.writeText(c.hashtags);
-        showToast('Hashtags copied!');
-      }
+      if (c?.hashtags) { navigator.clipboard.writeText(c.hashtags); showToast('Hashtags copied!'); }
     }
 
     function copyAll() {
       const c = state.content[state.platform];
       if (c) {
-        const full = c.text + (c.hashtags ? '\n\n' + c.hashtags : '');
-        navigator.clipboard.writeText(full);
+        navigator.clipboard.writeText(c.text + '\n\n' + c.hashtags);
         showToast('Copied to clipboard!');
       }
     }
 
-    function showToast(msg, isError = false) {
-      const toast = document.getElementById('toast');
-      toast.textContent = msg;
-      toast.className = `toast show ${isError ? 'error' : ''}`;
-      setTimeout(() => toast.classList.remove('show'), 2500);
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
     }
 
-    // ═══════════════════════════════════════════════════════════════════
-    // WORKER STATUS
-    // ═══════════════════════════════════════════════════════════════════
-    async function checkWorkerStatus() {
-      const dot = document.getElementById('statusDot');
-      const text = document.getElementById('statusText');
-
-      if (!state.workerUrl) {
-        dot.classList.add('offline');
-        text.textContent = 'Not configured';
-        return;
-      }
-
-      try {
-        const res = await fetch(state.workerUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ topic: 'test', platform: 'linkedin' })
-        });
-
-        if (res.ok) {
-          dot.classList.remove('offline');
-          text.textContent = 'Connected';
-        } else {
-          dot.classList.add('offline');
-          text.textContent = 'Error';
-        }
-      } catch (e) {
-        dot.classList.add('offline');
-        text.textContent = 'Offline';
-      }
-    }
-
-    // ═══════════════════════════════════════════════════════════════════
-    // INIT
-    // ═══════════════════════════════════════════════════════════════════
-    async function init() {
-      checkWorkerStatus();
-
+    async function refresh() {
+      document.getElementById('topicsList').innerHTML = '<div class="loading"><div class="spinner"></div><span>Loading...</span></div>';
       state.topics = await fetchAllTopics();
+      state.selectedTopic = null;
+      state.content = {};
       renderTopics();
+      document.getElementById('contentBody').innerHTML = `<div class="empty-state"><div class="empty-icon">✨</div><div class="empty-text">Select a trending topic</div></div>`;
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      init();
+      refresh();
 
-      // Refresh
-      document.getElementById('btnRefresh').onclick = async () => {
-        document.getElementById('topicsList').innerHTML = `<div class="loading"><div class="spinner"></div><span>Loading...</span></div>`;
-        state.topics = await fetchAllTopics();
-        state.selectedTopic = null;
-        state.content = {};
-        renderTopics();
-        document.getElementById('contentBody').innerHTML = `<div class="empty-state"><div class="empty-icon">✨</div><div class="empty-text">Select a trending topic</div></div>`;
-      };
+      document.getElementById('btnRefresh').onclick = refresh;
 
-      // Category tabs
       document.querySelectorAll('.cat-tab').forEach(tab => {
         tab.onclick = () => {
           document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
@@ -927,7 +777,6 @@
         };
       });
 
-      // Platform tabs
       document.querySelectorAll('.platform-tab').forEach(tab => {
         tab.onclick = () => {
           document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
@@ -936,31 +785,6 @@
           if (Object.keys(state.content).length > 0) renderContent();
         };
       });
-
-      // Settings modal
-      document.getElementById('btnSettings').onclick = () => {
-        document.getElementById('workerUrl').value = state.workerUrl;
-        document.getElementById('settingsModal').classList.add('open');
-      };
-
-      document.getElementById('btnCancelSettings').onclick = () => {
-        document.getElementById('settingsModal').classList.remove('open');
-      };
-
-      document.getElementById('btnSaveSettings').onclick = async () => {
-        const url = document.getElementById('workerUrl').value.trim();
-        state.workerUrl = url;
-        localStorage.setItem('worker_url', url);
-        document.getElementById('settingsModal').classList.remove('open');
-        await checkWorkerStatus();
-        showToast('Settings saved!');
-      };
-
-      document.getElementById('settingsModal').onclick = (e) => {
-        if (e.target.id === 'settingsModal') {
-          document.getElementById('settingsModal').classList.remove('open');
-        }
-      };
     });
   </script>
 </body>

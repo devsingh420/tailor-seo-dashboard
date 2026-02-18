@@ -1,9 +1,6 @@
 /**
  * Stitch Intelligence - Content Generator Worker
- * Uses Claude (Anthropic) API
- *
- * Environment Variable needed:
- * - ANTHROPIC_API_KEY: Your Anthropic API key
+ * Uses OpenAI GPT-4o-mini
  */
 
 export default {
@@ -36,48 +33,40 @@ export default {
         linkedin: {
           tone: 'professional, authoritative, thought-leadership',
           length: '200-250 words',
-          style: 'Start with a compelling hook. Use line breaks for readability. Include 3-4 key insights with emoji bullets. End with a question or call-to-action to drive engagement.',
+          style: 'Start with a compelling hook. Use line breaks. Include 3-4 key insights with emoji bullets. End with a question or CTA.',
           hashtags: 5
         },
         instagram: {
-          tone: 'aspirational, stylish, engaging with emojis throughout',
+          tone: 'aspirational, stylish, engaging with emojis',
           length: '100-150 words',
-          style: 'Punchy opening line that grabs attention. Short, impactful sentences. Lifestyle-focused and aspirational but relatable. Use emojis naturally.',
+          style: 'Punchy opening. Short sentences. Lifestyle-focused. Use emojis naturally.',
           hashtags: 20
         },
         facebook: {
           tone: 'conversational, engaging, shareable',
           length: '150-200 words',
-          style: 'Personal, relatable angle. Ask questions to encourage comments. Make it shareable. Friendly but knowledgeable tone.',
+          style: 'Personal angle. Ask questions. Encourage comments. Friendly but knowledgeable.',
           hashtags: 3
         },
         blog: {
           tone: 'informative, SEO-optimized, authoritative',
           length: '400-500 words',
-          style: 'Use markdown formatting. Include a compelling H1 title, engaging intro, 2-3 H2 sections with insights, and a conclusion with call-to-action.',
+          style: 'Use markdown. H1 title, engaging intro, 2-3 H2 sections, conclusion with CTA.',
           hashtags: 5
         }
       };
 
       const spec = platformSpecs[platform];
 
-      const systemPrompt = `You are the content creator for "Stitch Intelligence" - a premium bespoke tailoring brand based in Bangkok, Thailand.
+      const systemPrompt = `You are the content creator for "Stitch Intelligence" - a premium bespoke tailoring brand in Bangkok, Thailand.
 
-Your expertise covers the complete gentleman's lifestyle:
-- Bespoke suits and tailoring craftsmanship
-- Luxury timepieces (Rolex, Patek Philippe, Audemars Piguet, Omega)
-- Designer footwear and leather goods
-- Accessories (silk ties, cufflinks, pocket squares)
-- Luxury automobiles (Porsche, Mercedes, BMW, Bentley)
-- Premium gadgets and technology
+Your expertise: bespoke suits, luxury watches (Rolex, Patek Philippe, Omega), designer shoes, accessories (ties, cufflinks), luxury cars, premium gadgets.
 
-Brand voice: Sophisticated, knowledgeable, aspirational yet approachable. You educate while inspiring. Never salesy - always valuable content first.
+Brand voice: Sophisticated, knowledgeable, aspirational yet approachable.
 
-Target audience: Business professionals, executives, entrepreneurs, and style-conscious men aged 30-55 who appreciate quality craftsmanship and the finer things in life.`;
+Target audience: Business professionals, executives, entrepreneurs, style-conscious men 30-55.`;
 
-      const userPrompt = `Create a ${platform.toUpperCase()} post about this trending topic:
-
-"${topic}"
+      const userPrompt = `Create a ${platform.toUpperCase()} post about: "${topic}"
 
 Category: ${category || 'Luxury Lifestyle'}
 
@@ -85,35 +74,31 @@ Requirements:
 - Tone: ${spec.tone}
 - Length: ${spec.length}
 - Style: ${spec.style}
-- Include exactly ${spec.hashtags} relevant hashtags at the end
-- Make it timely, insightful, and engaging
-- Subtly connect to men's style and craftsmanship when natural
-- Be specific with details - avoid generic statements
+- Include ${spec.hashtags} hashtags at the end
+- Be specific and insightful, not generic
 
-Return ONLY the post content followed by hashtags on a new line. No labels, explanations, or meta-commentary.`;
+Return ONLY the post content with hashtags. No labels or explanations.`;
 
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': env.ANTHROPIC_API_KEY,
-          'anthropic-version': '2023-06-01'
+          'Authorization': `Bearer ${env.OPENAI_API_KEY}`
         },
         body: JSON.stringify({
-          model: 'claude-3-haiku-20240307',
-          max_tokens: 1024,
+          model: 'gpt-4o-mini',
           messages: [
-            {
-              role: 'user',
-              content: `${systemPrompt}\n\n${userPrompt}`
-            }
-          ]
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt }
+          ],
+          max_tokens: 1024,
+          temperature: 0.8
         })
       });
 
       if (!response.ok) {
         const error = await response.text();
-        console.error('Claude API Error:', error);
+        console.error('OpenAI Error:', error);
         return new Response(JSON.stringify({ error: 'AI generation failed', details: error }), {
           status: 500,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -121,9 +106,8 @@ Return ONLY the post content followed by hashtags on a new line. No labels, expl
       }
 
       const data = await response.json();
-      const content = data.content[0].text;
+      const content = data.choices[0].message.content;
 
-      // Parse content and hashtags
       const hashtagMatch = content.match(/#[\w]+/g) || [];
       const text = content.replace(/#[\w]+/g, '').trim();
 
