@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tailor Trend Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #000000;
+      --surface: rgba(255, 255, 255, 0.03);
+      --surface-hover: rgba(255, 255, 255, 0.06);
+      --card: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --glass: rgba(255, 255, 255, 0.02);
+      --text: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.6);
+      --text-tertiary: rgba(255, 255, 255, 0.4);
+      --accent: #0A84FF;
+      --accent-hover: #409CFF;
+      --green: #30D158;
+      --red: #FF453A;
+      --orange: #FF9F0A;
+      --radius: 16px;
+      --radius-sm: 12px;
+      --radius-xs: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 400;
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* HEADER */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent), #5E5CE6);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .logo span {
+      font-weight: 400;
+      color: var(--text-tertiary);
+      font-size: 14px;
+      margin-left: 4px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .last-updated {
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    .btn-refresh {
+      background: var(--surface);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 10px 20px;
+      border-radius: 980px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-refresh:hover {
+      background: var(--surface-hover);
+      transform: scale(1.02);
+    }
+
+    .btn-refresh:active {
+      transform: scale(0.98);
+    }
+
+    /* CONTAINER */
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 48px;
+    }
+
+    /* HERO STATS */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 32px;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      background: var(--surface-hover);
+      transform: translateY(-2px);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .stat-value {
+      font-size: 56px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-change {
+      font-size: 14px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 980px;
+    }
+
+    .stat-change.up {
+      color: var(--green);
+      background: rgba(48, 209, 88, 0.12);
+    }
+
+    .stat-change.down {
+      color: var(--red);
+      background: rgba(255, 69, 58, 0.12);
+    }
+
+    /* FILTER BAR */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .filter-label {
+      font-size: 14px;
+      color: var(--text-tertiary);
+      font-weight: 500;
+    }
+
+    .filter-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      background: var(--surface);
+      border: 1px solid transparent;
+      color: var(--text-secondary);
+      padding: 8px 16px;
+      border-radius: 980px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .chip:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+    }
+
+    .chip.active {
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    /* MAIN GRID */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 32px;
+    }
+
+    /* TRENDS PANEL */
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .panel-title {
+      font-size: 18px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .live-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease-in-out infinite;
+      box-shadow: 0 0 12px var(--green);
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.9); }
+    }
+
+    .source-tabs {
+      display: flex;
+      background: var(--surface);
+      border-radius: var(--radius-xs);
+      padding: 4px;
+    }
+
+    .tab {
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+    }
+
+    .tab:hover {
+      color: var(--text);
+    }
+
+    .tab.active {
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    /* TREND ITEMS */
+    .trend-list {
+      padding: 8px;
+    }
+
+    .trend-item {
+      padding: 24px;
+      border-radius: var(--radius-sm);
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      gap: 20px;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 4px;
+    }
+
+    .trend-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .trend-item:hover {
+      background: var(--surface-hover);
+    }
+
+    .trend-rank {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-tertiary);
+      text-align: center;
+    }
+
+    .trend-item:nth-child(1) .trend-rank { color: var(--text); }
+    .trend-item:nth-child(2) .trend-rank { color: var(--text-secondary); }
+    .trend-item:nth-child(3) .trend-rank { color: var(--text-secondary); }
+
+    .trend-content {
+      min-width: 0;
+    }
+
+    .trend-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .trend-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .trend-sources {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .source-badge {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .source-badge.google { background: #4285F4; }
+    .source-badge.reddit { background: #FF4500; }
+    .source-badge.twitter { background: #000; border: 1px solid var(--card-border); }
+    .source-badge.youtube { background: #FF0000; }
+    .source-badge.instagram { background: linear-gradient(135deg, #833AB4, #FD1D1D, #FCB045); }
+
+    .trend-volume {
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    .trend-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+    }
+
+    .btn-create {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 980px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-create:hover {
+      background: var(--accent-hover);
+      transform: scale(1.02);
+    }
+
+    .btn-create:active {
+      transform: scale(0.98);
+    }
+
+    .trend-change {
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .trend-change.up { color: var(--green); }
+    .trend-change.down { color: var(--red); }
+    .trend-change.new { color: var(--orange); }
+
+    /* SIDEBAR */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* SOURCE BREAKDOWN */
+    .source-breakdown {
+      padding: 24px;
+    }
+
+    .source-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .source-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .source-row:first-child {
+      padding-top: 0;
+    }
+
+    .source-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 140px;
+    }
+
+    .source-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .source-bar-container {
+      flex: 1;
+      height: 6px;
+      background: var(--surface);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .source-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+      border-radius: 3px;
+      transition: width 0.6s ease;
+    }
+
+    .source-pct {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      min-width: 40px;
+      text-align: right;
+    }
+
+    /* QUICK ACTIONS */
+    .actions-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 20px;
+    }
+
+    .action-btn {
+      background: var(--surface);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 20px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-btn:hover {
+      background: var(--surface-hover);
+      transform: translateY(-2px);
+    }
+
+    .action-btn:active {
+      transform: translateY(0);
+    }
+
+    .action-icon {
+      font-size: 24px;
+    }
+
+    .cta-section {
+      padding: 20px;
+      padding-top: 0;
+    }
+
+    .btn-cta {
+      width: 100%;
+      background: linear-gradient(135deg, var(--accent), #5E5CE6);
+      color: #fff;
+      border: none;
+      padding: 18px 24px;
+      border-radius: var(--radius-sm);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px -8px rgba(10, 132, 255, 0.4);
+    }
+
+    .btn-cta:hover::before {
+      opacity: 1;
+    }
+
+    .btn-cta:active {
+      transform: translateY(0);
+    }
+
+    /* LOADING STATE */
+    .skeleton {
+      background: linear-gradient(90deg, var(--surface) 25%, var(--surface-hover) 50%, var(--surface) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s ease-in-out infinite;
+      border-radius: var(--radius-xs);
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: #1C1C1E;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 40px;
+      width: 520px;
+      max-width: 90vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: modalIn 0.3s ease;
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .modal-title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .modal-subtitle {
+      font-size: 15px;
+      color: var(--text-tertiary);
+      margin-bottom: 32px;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.2);
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-select {
+      cursor: pointer;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .btn-modal-cancel {
+      flex: 1;
+      padding: 14px 24px;
+      background: var(--surface);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      border-radius: 980px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    .btn-modal-cancel:hover {
+      background: var(--surface-hover);
+    }
+
+    .btn-modal-submit {
+      flex: 2;
+      padding: 14px 24px;
+      background: var(--accent);
+      border: none;
+      color: #fff;
+      border-radius: 980px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    .btn-modal-submit:hover {
+      background: var(--accent-hover);
+    }
+
+    /* STATUS */
+    .status-bar {
+      text-align: center;
+      padding: 80px 32px;
+      color: var(--text-tertiary);
+    }
+
+    .status-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .status-text {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .container {
+        padding: 32px 24px;
+      }
+
+      header {
+        padding: 16px 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">S</div>
+      Stitch
+      <span>Intelligence</span>
+    </div>
+    <div class="header-actions">
+      <span class="last-updated" id="lastUpdated">Updated just now</span>
+      <button class="btn-refresh" id="btnRefresh">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M2 8a6 6 0 0111.46-2.46M14 8a6 6 0 01-11.46 2.46"/>
+          <path d="M14 2v4h-4M2 14v-4h4"/>
+        </svg>
+        Refresh
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <div class="container">
+
+    <!-- HERO STATS -->
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-label">Total Mentions</div>
+        <div class="stat-value" id="statMentions">35.2k</div>
+        <span class="stat-change up">+12% this week</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Active Topics</div>
+        <div class="stat-value" id="statTopics">5</div>
+        <span class="stat-change up">2 trending up</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Platforms Monitored</div>
+        <div class="stat-value" id="statPlatforms">5</div>
+        <span class="stat-change up">All active</span>
+      </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <span class="filter-label">Filter by topic:</span>
+      <div class="filter-chips">
+        <button class="chip active" data-kw="all">All Topics</button>
+        <button class="chip" data-kw="bespoke suit">Bespoke Suit</button>
+        <button class="chip" data-kw="men tailor">Men Tailor</button>
+        <button class="chip" data-kw="suits thailand">Suits Thailand</button>
+        <button class="chip" data-kw="tailor bangkok">Tailor Bangkok</button>
+      </div>
+    </div>
+
+    <div class="main-grid">
+
+      <!-- LEFT: TRENDING LIST -->
+      <div>
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span class="live-indicator"></span>
+              Trending Now
+            </div>
+            <div class="source-tabs">
+              <button class="tab active" data-src="all">All</button>
+              <button class="tab" data-src="google">Google</button>
+              <button class="tab" data-src="reddit">Reddit</button>
+              <button class="tab" data-src="twitter">X</button>
+            </div>
+          </div>
+
+          <div class="trend-list" id="trendList">
+            <div class="status-bar">
+              <div class="status-icon">📊</div>
+              <div class="status-text">Click Refresh to load trends</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: SIDEBAR -->
+      <div class="sidebar">
+
+        <!-- Sources -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Source Distribution</div>
+          </div>
+          <div class="source-breakdown" id="sourceBreakdown">
+            <div class="source-row">
+              <div class="source-info">
+                <span class="source-badge google">G</span>
+                <span class="source-name">Google</span>
+              </div>
+              <div class="source-bar-container">
+                <div class="source-bar" style="width: 42%"></div>
+              </div>
+              <span class="source-pct">42%</span>
+            </div>
+            <div class="source-row">
+              <div class="source-info">
+                <span class="source-badge reddit">R</span>
+                <span class="source-name">Reddit</span>
+              </div>
+              <div class="source-bar-container">
+                <div class="source-bar" style="width: 28%"></div>
+              </div>
+              <span class="source-pct">28%</span>
+            </div>
+            <div class="source-row">
+              <div class="source-info">
+                <span class="source-badge twitter">X</span>
+                <span class="source-name">X / Twitter</span>
+              </div>
+              <div class="source-bar-container">
+                <div class="source-bar" style="width: 18%"></div>
+              </div>
+              <span class="source-pct">18%</span>
+            </div>
+            <div class="source-row">
+              <div class="source-info">
+                <span class="source-badge youtube">Y</span>
+                <span class="source-name">YouTube</span>
+              </div>
+              <div class="source-bar-container">
+                <div class="source-bar" style="width: 8%"></div>
+              </div>
+              <span class="source-pct">8%</span>
+            </div>
+            <div class="source-row">
+              <div class="source-info">
+                <span class="source-badge instagram">I</span>
+                <span class="source-name">Instagram</span>
+              </div>
+              <div class="source-bar-container">
+                <div class="source-bar" style="width: 4%"></div>
+              </div>
+              <span class="source-pct">4%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Quick Actions</div>
+          </div>
+          <div class="actions-grid">
+            <button class="action-btn" onclick="openModal()">
+              <span class="action-icon">✍️</span>
+              New Post
+            </button>
+            <button class="action-btn" onclick="exportData()">
+              <span class="action-icon">📥</span>
+              Export
+            </button>
+            <button class="action-btn" onclick="copyTopics()">
+              <span class="action-icon">📋</span>
+              Copy
+            </button>
+            <button class="action-btn" onclick="scheduleReport()">
+              <span class="action-icon">📅</span>
+              Schedule
+            </button>
+          </div>
+          <div class="cta-section">
+            <button class="btn-cta" onclick="openModal()">
+              Create from Top Trend
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-title">Create Blog Post</div>
+      <div class="modal-subtitle" id="modalSubtitle">Based on selected trend topic</div>
+
+      <div class="form-group">
+        <label class="form-label">Title</label>
+        <input class="form-input" id="postTitle" type="text"
+          placeholder="e.g. Why Bangkok is the World's Best Tailoring Hub" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Target Keyword</label>
+        <input class="form-input" id="postKeyword" type="text" placeholder="e.g. bespoke suit Bangkok" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Tone</label>
+        <select class="form-select" id="postTone">
+          <option value="informative">Informative</option>
+          <option value="seo">SEO Optimized</option>
+          <option value="conversational">Conversational</option>
+          <option value="luxury">Premium / Luxury</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Additional Notes</label>
+        <textarea class="form-textarea" id="postNotes"
+          placeholder="Any specific angles or talking points..."></textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-modal-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-modal-submit" onclick="generatePost()">Generate Post</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ─── API CONFIGURATION ──────────────────────────────────────────────
+    const API_CONFIG = {
+      youtube: {
+        apiKey: 'AIzaSyD2-uxaIChHIQTPi6_3eCtzcv0ZA6dIZKw',
+        enabled: true
+      },
+      instagram: {
+        accessToken: 'YOUR_INSTAGRAM_ACCESS_TOKEN_HERE',
+        enabled: false
+      }
+    };
+
+    const KEYWORDS = [
+      'bespoke suit bangkok',
+      'tailor bangkok',
+      'suits thailand',
+      'custom suit bangkok',
+      'men tailor thailand'
+    ];
+
+    // ─── REDDIT API ────────────────────────────────────────────────────
+    async function fetchRedditPosts(query) {
+      try {
+        const url = `https://www.reddit.com/search.json?q=${encodeURIComponent(query)}&sort=top&limit=10&t=week`;
+        const response = await fetch(url, {
+          headers: { 'User-Agent': 'TailorTrendDashboard/1.0' }
+        });
+        if (!response.ok) throw new Error('Reddit API failed');
+        const data = await response.json();
+        return data.data.children.map(post => ({
+          title: post.data.title,
+          url: post.data.url,
+          score: post.data.score,
+          comments: post.data.num_comments,
+          subreddit: post.data.subreddit,
+          created: post.data.created_utc
+        }));
+      } catch (error) {
+        console.error('Reddit fetch error:', error);
+        return [];
+      }
+    }
+
+    // ─── YOUTUBE API ───────────────────────────────────────────────────
+    async function fetchYouTubePosts(query) {
+      if (!API_CONFIG.youtube.enabled) return [];
+      try {
+        const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&type=video&maxResults=10&order=viewCount&key=${API_CONFIG.youtube.apiKey}`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('YouTube API failed');
+        const data = await response.json();
+        return data.items.map(item => ({
+          title: item.snippet.title,
+          videoId: item.id.videoId,
+          description: item.snippet.description,
+          channelTitle: item.snippet.channelTitle,
+          publishedAt: item.snippet.publishedAt
+        }));
+      } catch (error) {
+        console.error('YouTube fetch error:', error);
+        return [];
+      }
+    }
+
+    // ─── INSTAGRAM API ─────────────────────────────────────────────────
+    async function fetchInstagramPosts(hashtag) {
+      if (!API_CONFIG.instagram.enabled) return [];
+      try {
+        const searchUrl = `https://graph.facebook.com/v18.0/ig_hashtag_search?user_id=YOUR_IG_USER_ID&q=${hashtag}&access_token=${API_CONFIG.instagram.accessToken}`;
+        const searchResponse = await fetch(searchUrl);
+        const searchData = await searchResponse.json();
+        if (!searchData.data || searchData.data.length === 0) return [];
+        const hashtagId = searchData.data[0].id;
+        const mediaUrl = `https://graph.facebook.com/v18.0/${hashtagId}/top_media?user_id=YOUR_IG_USER_ID&fields=id,caption,media_type,media_url,permalink,timestamp&access_token=${API_CONFIG.instagram.accessToken}`;
+        const mediaResponse = await fetch(mediaUrl);
+        const mediaData = await mediaResponse.json();
+        return mediaData.data || [];
+      } catch (error) {
+        console.error('Instagram fetch error:', error);
+        return [];
+      }
+    }
+
+    // ─── AGGREGATE TRENDS ──────────────────────────────────────────────
+    async function fetchAllTrends() {
+      const allResults = [];
+      for (const keyword of KEYWORDS) {
+        const redditPosts = await fetchRedditPosts(keyword);
+        redditPosts.forEach(post => {
+          allResults.push({
+            title: post.title,
+            source: 'reddit',
+            score: post.score,
+            engagement: post.score + post.comments,
+            url: post.url,
+            timestamp: post.created,
+            keyword: keyword
+          });
+        });
+
+        const youtubePosts = await fetchYouTubePosts(keyword);
+        youtubePosts.forEach(video => {
+          allResults.push({
+            title: video.title,
+            source: 'youtube',
+            score: 100,
+            engagement: 100,
+            url: `https://youtube.com/watch?v=${video.videoId}`,
+            timestamp: new Date(video.publishedAt).getTime() / 1000,
+            keyword: keyword
+          });
+        });
+
+        const hashtagClean = keyword.replace(/\s+/g, '');
+        const instaPosts = await fetchInstagramPosts(hashtagClean);
+        instaPosts.forEach(post => {
+          allResults.push({
+            title: post.caption?.substring(0, 100) || 'Instagram Post',
+            source: 'instagram',
+            score: 50,
+            engagement: 50,
+            url: post.permalink,
+            timestamp: new Date(post.timestamp).getTime() / 1000,
+            keyword: keyword
+          });
+        });
+
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+
+      allResults.sort((a, b) => b.engagement - a.engagement);
+      return allResults.slice(0, 5).map((item, index) => ({
+        rank: index + 1,
+        title: item.title,
+        sources: [item.source],
+        volume: `${item.engagement} engagement`,
+        change: "NEW",
+        trend: "new",
+        keywords: [item.keyword],
+        url: item.url
+      }));
+    }
+
+    // ─── MOCK DATA ─────────────────────────────────────────────────────
+    const MOCK_TRENDS = [
+      {
+        rank: 1,
+        title: "Bespoke Suits in Bangkok: Why Tourists Are Flying In Just to Get Tailored",
+        sources: ["google", "reddit"],
+        volume: "12.4k mentions",
+        change: "+38%",
+        trend: "up",
+        keywords: ["bespoke suit", "suits thailand", "tailor bangkok"]
+      },
+      {
+        rank: 2,
+        title: "Thailand vs Hong Kong: Which Has the Best Custom Tailors?",
+        sources: ["twitter", "reddit"],
+        volume: "8.1k mentions",
+        change: "+21%",
+        trend: "up",
+        keywords: ["suits thailand", "tailor bangkok"]
+      },
+      {
+        rank: 3,
+        title: "How to Order a Suit from a Thai Tailor Without Getting Scammed",
+        sources: ["reddit", "youtube"],
+        volume: "6.7k mentions",
+        change: "NEW",
+        trend: "new",
+        keywords: ["men tailor", "suits from thailand"]
+      },
+      {
+        rank: 4,
+        title: "The Best Tailors on Sukhumvit Road — 2025 Guide",
+        sources: ["google", "instagram"],
+        volume: "4.2k mentions",
+        change: "-5%",
+        trend: "down",
+        keywords: ["tailor bangkok", "men tailor"]
+      },
+      {
+        rank: 5,
+        title: "Shipping Custom Suits from Thailand: What You Need to Know",
+        sources: ["google", "twitter"],
+        volume: "3.8k mentions",
+        change: "+12%",
+        trend: "up",
+        keywords: ["suits from thailand", "suits thailand"]
+      }
+    ];
+
+    // ─── STATE ─────────────────────────────────────────────────────────
+    let activeKeyword = "all";
+    let activeSource = "all";
+    let selectedTrend = null;
+
+    // ─── RENDER TRENDS ─────────────────────────────────────────────────
+    function renderTrends(data) {
+      const list = document.getElementById("trendList");
+      if (!data || data.length === 0) {
+        list.innerHTML = `<div class="status-bar"><div class="status-icon">🔍</div><div class="status-text">No results found</div></div>`;
+        return;
+      }
+
+      list.innerHTML = data.map((t, i) => `
+        <div class="trend-item" onclick="selectTrend(${i})">
+          <div class="trend-rank">${t.rank}</div>
+          <div class="trend-content">
+            <div class="trend-title">${t.title}</div>
+            <div class="trend-meta">
+              <div class="trend-sources">
+                ${t.sources.map(s => `<span class="source-badge ${s}">${srcLetter(s)}</span>`).join("")}
+              </div>
+              <span class="trend-volume">${t.volume}</span>
+            </div>
+          </div>
+          <div class="trend-actions">
+            <button class="btn-create" onclick="event.stopPropagation(); openModalWithTrend(${i})">
+              Create Post
+            </button>
+            <span class="trend-change ${t.trend}">${t.trend === "up" ? "↑" : t.trend === "down" ? "↓" : "★"} ${t.change}</span>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function srcLetter(s) {
+      const map = { google: "G", reddit: "R", twitter: "X", youtube: "Y", instagram: "I" };
+      return map[s] || "?";
+    }
+
+    // ─── REFRESH ───────────────────────────────────────────────────────
+    document.getElementById("btnRefresh").addEventListener("click", async function () {
+      const btn = this;
+      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite"><path d="M2 8a6 6 0 0111.46-2.46M14 8a6 6 0 01-11.46 2.46"/><path d="M14 2v4h-4M2 14v-4h4"/></svg> Loading...`;
+      btn.disabled = true;
+
+      const style = document.createElement('style');
+      style.textContent = '@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';
+      document.head.appendChild(style);
+
+      const list = document.getElementById("trendList");
+      list.innerHTML = `
+        ${[1, 2, 3, 4, 5].map(() => `
+          <div class="trend-item">
+            <div class="skeleton" style="width:48px; height:36px;"></div>
+            <div class="trend-content" style="flex:1">
+              <div class="skeleton" style="height:18px; width:80%; margin-bottom:12px;"></div>
+              <div class="skeleton" style="height:14px; width:40%;"></div>
+            </div>
+          </div>
+        `).join("")}
+      `;
+
+      try {
+        const trends = await fetchAllTrends();
+        const dataToRender = trends.length > 0 ? trends : MOCK_TRENDS;
+
+        const now = new Date();
+        document.getElementById("lastUpdated").textContent =
+          "Updated " + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        renderTrends(dataToRender);
+
+        const totalEngagement = dataToRender.reduce((sum, t) => {
+          const num = parseInt(t.volume.replace(/[^0-9]/g, '')) || 0;
+          return sum + num;
+        }, 0);
+
+        document.getElementById("statMentions").textContent =
+          totalEngagement > 0 ? `${(totalEngagement / 1000).toFixed(1)}k` : "—";
+
+        btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8a6 6 0 0111.46-2.46M14 8a6 6 0 01-11.46 2.46"/><path d="M14 2v4h-4M2 14v-4h4"/></svg> Refresh`;
+        btn.disabled = false;
+
+      } catch (error) {
+        console.error('Error fetching trends:', error);
+        renderTrends(MOCK_TRENDS);
+        btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8a6 6 0 0111.46-2.46M14 8a6 6 0 01-11.46 2.46"/><path d="M14 2v4h-4M2 14v-4h4"/></svg> Refresh`;
+        btn.disabled = false;
+      }
+    });
+
+    // ─── KEYWORD FILTER ────────────────────────────────────────────────
+    document.querySelectorAll(".chip").forEach(chip => {
+      chip.addEventListener("click", function () {
+        document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+        this.classList.add("active");
+        activeKeyword = this.dataset.kw;
+
+        if (activeKeyword === "all") {
+          renderTrends(MOCK_TRENDS);
+        } else {
+          const filtered = MOCK_TRENDS.filter(t =>
+            t.keywords.includes(activeKeyword)
+          );
+          renderTrends(filtered);
+        }
+      });
+    });
+
+    // ─── SOURCE TABS ───────────────────────────────────────────────────
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", function () {
+        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+        this.classList.add("active");
+        activeSource = this.dataset.src;
+
+        if (activeSource === "all") {
+          renderTrends(MOCK_TRENDS);
+        } else {
+          const filtered = MOCK_TRENDS.filter(t =>
+            t.sources.includes(activeSource)
+          );
+          renderTrends(filtered);
+        }
+      });
+    });
+
+    // ─── MODAL ─────────────────────────────────────────────────────────
+    function openModal() {
+      document.getElementById("modalOverlay").classList.add("open");
+      if (MOCK_TRENDS.length > 0 && !selectedTrend) {
+        prefillModal(MOCK_TRENDS[0]);
+      }
+    }
+
+    function openModalWithTrend(idx) {
+      selectedTrend = MOCK_TRENDS[idx];
+      prefillModal(selectedTrend);
+      document.getElementById("modalOverlay").classList.add("open");
+    }
+
+    function prefillModal(trend) {
+      document.getElementById("postTitle").value = trend.title;
+      document.getElementById("postKeyword").value = trend.keywords[0] || "";
+      document.getElementById("modalSubtitle").textContent = `Rank #${trend.rank} · ${trend.volume}`;
+    }
+
+    function closeModal() {
+      document.getElementById("modalOverlay").classList.remove("open");
+      selectedTrend = null;
+    }
+
+    function generatePost() {
+      const title = document.getElementById("postTitle").value;
+      const keyword = document.getElementById("postKeyword").value;
+      const tone = document.getElementById("postTone").value;
+      alert(`Blog post request queued\n\nTitle: ${title}\nKeyword: ${keyword}\nTone: ${tone}`);
+      closeModal();
+    }
+
+    function selectTrend(idx) {
+      selectedTrend = MOCK_TRENDS[idx];
+    }
+
+    // ─── QUICK ACTIONS ─────────────────────────────────────────────────
+    function exportData() {
+      const rows = ["Rank,Title,Volume,Change,Sources"];
+      MOCK_TRENDS.forEach(t => {
+        rows.push(`${t.rank},"${t.title}",${t.volume},${t.change},"${t.sources.join("|")}"`);
+      });
+      const csv = rows.join("\n");
+      const blob = new Blob([csv], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "trends_export.csv";
+      a.click();
+    }
+
+    function copyTopics() {
+      const text = MOCK_TRENDS.map((t, i) => `${i + 1}. ${t.title}`).join("\n");
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Topics copied to clipboard");
+      });
+    }
+
+    function scheduleReport() {
+      alert("Schedule feature — connect to your calendar API");
+    }
+
+    document.getElementById("modalOverlay").addEventListener("click", function (e) {
+      if (e.target === this) closeModal();
+    });
+
+    // Auto-load on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderTrends(MOCK_TRENDS);
+    });
+  </script>
+</body>
+
+</html>
