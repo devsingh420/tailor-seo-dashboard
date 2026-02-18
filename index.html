@@ -668,7 +668,7 @@
     ];
 
     // ═══════════════════════════════════════════════════════════════════
-    // FETCH TRENDS FROM REDDIT (real data)
+    // FETCH TRENDS FROM REDDIT
     // ═══════════════════════════════════════════════════════════════════
     async function fetchRedditTrends() {
       const results = [];
@@ -704,17 +704,105 @@
     }
 
     // ═══════════════════════════════════════════════════════════════════
-    // AGGREGATE AND RANK TRENDS
+    // FETCH TRENDS FROM GOOGLE (via News RSS)
+    // ═══════════════════════════════════════════════════════════════════
+    async function fetchGoogleTrends() {
+      const results = [];
+
+      for (const keyword of KEYWORDS) {
+        try {
+          // Use Google News RSS via CORS proxy
+          const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(keyword)}&hl=en-US&gl=US&ceid=US:en`;
+          const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(rssUrl)}`);
+
+          if (response.ok) {
+            const text = await response.text();
+            const parser = new DOMParser();
+            const xml = parser.parseFromString(text, 'text/xml');
+            const items = xml.querySelectorAll('item');
+
+            items.forEach((item, index) => {
+              if (index < 3) { // Top 3 per keyword
+                const title = item.querySelector('title')?.textContent || '';
+                const link = item.querySelector('link')?.textContent || '';
+                const pubDate = item.querySelector('pubDate')?.textContent || '';
+
+                results.push({
+                  title: title.replace(/ - .*$/, ''), // Remove source suffix
+                  source: 'google',
+                  score: 100 - (index * 20), // Rank-based score
+                  url: link,
+                  keyword,
+                  date: new Date(pubDate)
+                });
+              }
+            });
+          }
+        } catch (e) {
+          console.warn('Google News fetch failed for:', keyword);
+        }
+
+        await new Promise(r => setTimeout(r, 150));
+      }
+
+      return results;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // FETCH FROM HACKER NEWS (tech/business trends)
+    // ═══════════════════════════════════════════════════════════════════
+    async function fetchHackerNewsTrends() {
+      const results = [];
+
+      try {
+        // Search HN for relevant keywords
+        for (const keyword of KEYWORDS.slice(0, 2)) {
+          const url = `https://hn.algolia.com/api/v1/search?query=${encodeURIComponent(keyword)}&tags=story&hitsPerPage=3`;
+          const response = await fetch(url);
+
+          if (response.ok) {
+            const data = await response.json();
+            data.hits.forEach(hit => {
+              results.push({
+                title: hit.title,
+                source: 'twitter', // Using X/Twitter icon for tech news
+                score: hit.points || 50,
+                url: hit.url || `https://news.ycombinator.com/item?id=${hit.objectID}`,
+                keyword
+              });
+            });
+          }
+        }
+      } catch (e) {
+        console.warn('HN fetch failed:', e);
+      }
+
+      return results;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // AGGREGATE AND RANK ALL TRENDS
     // ═══════════════════════════════════════════════════════════════════
     async function fetchAllTrends() {
-      const redditData = await fetchRedditTrends();
+      // Fetch from all sources in parallel
+      const [redditData, googleData, hnData] = await Promise.all([
+        fetchRedditTrends(),
+        fetchGoogleTrends(),
+        fetchHackerNewsTrends()
+      ]);
 
-      // Group similar titles and aggregate scores
+      const allData = [...redditData, ...googleData, ...hnData];
+
+      // Group similar titles and aggregate
       const grouped = {};
-      redditData.forEach(item => {
-        const key = item.title.toLowerCase().slice(0, 50);
+      allData.forEach(item => {
+        const key = item.title.toLowerCase().slice(0, 40);
         if (!grouped[key]) {
-          grouped[key] = { ...item, sources: ['reddit'], totalScore: 0 };
+          grouped[key] = { ...item, sources: [item.source], totalScore: 0 };
+        } else {
+          if (!grouped[key].sources.includes(item.source)) {
+            grouped[key].sources.push(item.source);
+          }
         }
         grouped[key].totalScore += item.score;
       });
@@ -722,7 +810,7 @@
       // Convert to array and sort by score
       let trends = Object.values(grouped)
         .sort((a, b) => b.totalScore - a.totalScore)
-        .slice(0, 5)
+        .slice(0, 6)
         .map((t, i) => ({
           rank: i + 1,
           title: t.title,
