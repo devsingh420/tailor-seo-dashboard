@@ -944,6 +944,11 @@ Requirements:
 Return ONLY the content, no explanations.`;
 
       try {
+        // Check if using wrong key type
+        if (state.apiKey.startsWith('sk-ant-')) {
+          throw new Error('WRONG_KEY_TYPE');
+        }
+
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
           headers: {
@@ -959,9 +964,17 @@ Return ONLY the content, no explanations.`;
         });
 
         if (!response.ok) {
-          const errorText = await response.text();
-          console.error('API Error:', errorText);
-          throw new Error('API request failed');
+          const errorData = await response.json().catch(() => ({}));
+          console.error('API Error:', errorData);
+
+          if (response.status === 401) {
+            throw new Error('INVALID_KEY');
+          } else if (response.status === 429) {
+            throw new Error('RATE_LIMIT');
+          } else if (response.status === 400) {
+            throw new Error('BAD_REQUEST');
+          }
+          throw new Error('API_ERROR');
         }
 
         const data = await response.json();
@@ -979,8 +992,20 @@ Return ONLY the content, no explanations.`;
         showToast('Content generated successfully!');
       } catch (error) {
         console.error('Generation error:', error);
-        contentEl.innerHTML = '<div class="loading">Generation failed. Check your API key.</div>';
-        showToast('Failed to generate content', 'error');
+
+        let errorMsg = 'Generation failed.';
+        if (error.message === 'WRONG_KEY_TYPE') {
+          errorMsg = 'Wrong key type. You entered an Anthropic key. Please use an OpenAI key (starts with sk-).';
+        } else if (error.message === 'INVALID_KEY') {
+          errorMsg = 'Invalid API key. Check your OpenAI key at platform.openai.com';
+        } else if (error.message === 'RATE_LIMIT') {
+          errorMsg = 'Rate limit reached. Please wait a moment and try again.';
+        } else if (error.message === 'BAD_REQUEST') {
+          errorMsg = 'Bad request. Please try a shorter topic.';
+        }
+
+        contentEl.innerHTML = `<div class="loading" style="color:var(--red);flex-direction:column;gap:8px;"><span>Error</span><span style="font-size:12px;color:var(--text-muted);">${errorMsg}</span></div>`;
+        showToast(errorMsg, 'error');
       }
     }
 
