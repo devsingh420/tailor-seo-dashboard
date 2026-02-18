@@ -3,23 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Stitch Intelligence</title>
+  <title>Stitch Intelligence - Content Studio</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #000;
-      --surface: rgba(255,255,255,0.05);
+      --bg: #0a0a0a;
+      --surface: rgba(255,255,255,0.04);
       --surface-hover: rgba(255,255,255,0.08);
       --border: rgba(255,255,255,0.1);
       --text: #fff;
       --text-secondary: rgba(255,255,255,0.6);
-      --text-muted: rgba(255,255,255,0.4);
+      --text-muted: rgba(255,255,255,0.35);
       --accent: #0A84FF;
+      --gold: #C9A962;
       --green: #30D158;
-      --red: #FF453A;
-      --orange: #FF9F0A;
     }
 
     html, body {
@@ -34,193 +33,215 @@
     .app {
       height: 100vh;
       display: grid;
-      grid-template-rows: 56px 1fr;
+      grid-template-rows: auto 1fr;
     }
 
+    /* Header */
     header {
-      padding: 0 24px;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      background: rgba(0,0,0,0.8);
-      backdrop-filter: blur(20px);
     }
 
     .logo {
-      font-size: 16px;
-      font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
-    .logo-icon {
-      width: 28px;
-      height: 28px;
-      background: linear-gradient(135deg, var(--accent), #5E5CE6);
-      border-radius: 6px;
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--gold), #E8D5A3);
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
       font-weight: 700;
+      font-size: 18px;
+      color: #000;
     }
 
-    .header-center {
+    .logo-text {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-text span {
+      color: var(--gold);
+    }
+
+    .header-actions {
       display: flex;
       align-items: center;
-      gap: 16px;
-      font-size: 13px;
-      color: var(--text-secondary);
+      gap: 12px;
     }
 
-    .live-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--green);
+    .worker-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 6px 12px;
+      background: var(--surface);
+      border-radius: 6px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
-      animation: pulse 2s infinite;
-      box-shadow: 0 0 8px var(--green);
+      background: var(--green);
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
+    .status-dot.offline { background: var(--text-muted); }
 
     .btn {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
       padding: 8px 16px;
       border-radius: 8px;
       font-size: 13px;
       font-weight: 500;
       cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-family: inherit;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover { background: var(--surface-hover); }
+    .btn-gold { background: var(--gold); color: #000; border-color: var(--gold); font-weight: 600; }
+    .btn-gold:hover { background: #D4B876; }
+
+    /* Main Layout */
+    .main {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      overflow: hidden;
+    }
+
+    /* Sidebar - Topics */
+    .sidebar {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .category-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .cat-tab {
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 500;
+      border-radius: 6px;
+      cursor: pointer;
+      background: var(--surface);
+      color: var(--text-secondary);
+      border: 1px solid transparent;
       font-family: inherit;
       transition: all 0.15s;
     }
 
-    .btn:hover { background: var(--surface-hover); }
-    .btn-success { background: var(--green); border-color: var(--green); color: #000; font-weight: 600; }
-    .btn-success:hover { background: #5DE77A; }
+    .cat-tab:hover { color: var(--text); background: var(--surface-hover); }
+    .cat-tab.active { background: var(--gold); color: #000; }
 
-    .main {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      height: 100%;
-      overflow: hidden;
-    }
-
-    .trends-panel {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      overflow: hidden;
-      border-right: 1px solid var(--border);
-    }
-
-    .panel-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .trends-list {
+    .topics-list {
       flex: 1;
       overflow-y: auto;
+      padding: 12px;
       display: flex;
       flex-direction: column;
       gap: 8px;
     }
 
-    .trend-item {
+    .topic-card {
       background: var(--surface);
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
       cursor: pointer;
       transition: all 0.15s;
     }
 
-    .trend-item:hover { background: var(--surface-hover); border-color: rgba(255,255,255,0.2); }
-    .trend-item.selected { border-color: var(--accent); background: rgba(10,132,255,0.1); }
+    .topic-card:hover { background: var(--surface-hover); border-color: rgba(255,255,255,0.2); }
+    .topic-card.selected { border-color: var(--gold); background: rgba(201,169,98,0.1); }
+    .topic-card.generating { opacity: 0.6; pointer-events: none; }
 
-    .trend-header {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
+    .topic-category {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--gold);
+      margin-bottom: 6px;
     }
 
-    .trend-rank {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--text-muted);
-      min-width: 28px;
-    }
-
-    .trend-item:nth-child(1) .trend-rank { color: var(--accent); }
-
-    .trend-title {
-      font-size: 14px;
+    .topic-title {
+      font-size: 13px;
       font-weight: 500;
       line-height: 1.4;
+      margin-bottom: 8px;
     }
 
-    .trend-meta {
+    .topic-meta {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       font-size: 11px;
       color: var(--text-muted);
-      margin-top: 10px;
-      margin-left: 40px;
     }
 
-    .source-dot {
-      width: 16px;
-      height: 16px;
-      border-radius: 4px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 8px;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .source-dot.google { background: #4285F4; }
-    .source-dot.reddit { background: #FF4500; }
-    .source-dot.twitter { background: #1DA1F2; }
-
-    .trend-change {
+    .topic-source {
       padding: 2px 6px;
+      background: var(--surface);
       border-radius: 4px;
-      font-weight: 600;
+      font-weight: 500;
     }
 
-    .trend-change.up { color: var(--green); background: rgba(48,209,88,0.15); }
-    .trend-change.down { color: var(--red); background: rgba(255,69,58,0.15); }
-    .trend-change.new { color: var(--orange); background: rgba(255,159,10,0.15); }
-
+    /* Content Panel */
     .content-panel {
       display: flex;
       flex-direction: column;
-      height: 100%;
       overflow: hidden;
     }
 
     .content-header {
-      padding: 14px 20px;
+      padding: 16px 20px;
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: space-between;
+    }
+
+    .platform-tabs {
+      display: flex;
+      gap: 6px;
     }
 
     .platform-tab {
@@ -229,87 +250,127 @@
       font-weight: 500;
       border-radius: 8px;
       cursor: pointer;
+      background: var(--surface);
       color: var(--text-secondary);
       border: 1px solid var(--border);
-      background: var(--surface);
       font-family: inherit;
       transition: all 0.15s;
     }
 
-    .platform-tab:hover { color: var(--text); background: var(--surface-hover); }
-    .platform-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .platform-tab:hover { color: var(--text); }
+    .platform-tab.active { background: var(--gold); color: #000; border-color: var(--gold); }
 
     .content-body {
       flex: 1;
       padding: 20px;
       overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
     }
 
-    .content-empty {
-      flex: 1;
+    .empty-state {
+      height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: var(--text-muted);
       text-align: center;
-      gap: 8px;
-      font-size: 14px;
+      color: var(--text-muted);
     }
 
-    .content-empty-icon { font-size: 40px; opacity: 0.5; }
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.4;
+    }
+
+    .empty-text {
+      font-size: 14px;
+      margin-bottom: 4px;
+      color: var(--text-secondary);
+    }
+
+    .empty-hint {
+      font-size: 12px;
+    }
 
     .content-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
+      margin-bottom: 16px;
       overflow: hidden;
     }
 
     .content-card-header {
       padding: 12px 16px;
+      background: rgba(255,255,255,0.02);
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 12px;
+    }
+
+    .card-label {
+      font-size: 11px;
       font-weight: 600;
-      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
     }
 
     .content-text {
-      padding: 16px;
+      padding: 20px;
       font-size: 14px;
-      line-height: 1.7;
+      line-height: 1.8;
       white-space: pre-wrap;
     }
 
     .content-hashtags {
-      padding: 12px 16px;
+      padding: 14px 20px;
+      background: rgba(201,169,98,0.08);
       border-top: 1px solid var(--border);
       font-size: 13px;
-      color: var(--accent);
-      background: rgba(10,132,255,0.05);
+      color: var(--gold);
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .hashtags-text {
+      flex: 1;
+      word-break: break-word;
     }
 
     .copy-all-btn {
       width: 100%;
-      padding: 14px;
+      padding: 16px;
       font-size: 14px;
-      display: flex;
-      align-items: center;
       justify-content: center;
-      gap: 8px;
     }
 
+    /* Loading */
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      color: var(--text-secondary);
+      gap: 12px;
+    }
+
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--border);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Toast */
     .toast {
       position: fixed;
       bottom: 24px;
@@ -323,30 +384,95 @@
       opacity: 0;
       transform: translateY(10px);
       transition: all 0.3s;
-      z-index: 200;
+      z-index: 1000;
     }
 
     .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.error { background: #FF453A; color: #fff; }
 
-    .loading {
-      display: flex;
+    /* Settings Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(10px);
+      display: none;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      z-index: 100;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: #141414;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      width: 440px;
+      max-width: 90vw;
+    }
+
+    .modal h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .modal p {
+      font-size: 13px;
       color: var(--text-secondary);
-      padding: 40px;
+      line-height: 1.5;
+      margin-bottom: 20px;
     }
 
-    .spinner {
-      width: 16px;
-      height: 16px;
-      border: 2px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+    .modal code {
+      background: var(--surface);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
     }
 
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .modal-actions .btn {
+      flex: 1;
+      justify-content: center;
+      padding: 12px;
+    }
 
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -357,41 +483,71 @@
   <div class="app">
     <header>
       <div class="logo">
-        <div class="logo-icon">S</div>
-        Stitch Intelligence
+        <div class="logo-mark">S</div>
+        <div class="logo-text">Stitch <span>Intelligence</span></div>
       </div>
-      <div class="header-center">
-        <span class="live-dot"></span>
-        <span>Live trends • Auto-refresh <span id="countdown">5:00</span></span>
+      <div class="header-actions">
+        <div class="worker-status">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="statusText">Checking...</span>
+        </div>
+        <button class="btn" id="btnSettings">⚙️ Setup</button>
+        <button class="btn" id="btnRefresh">↻ Refresh</button>
       </div>
-      <button class="btn" id="btnRefresh">↻ Refresh</button>
     </header>
 
     <div class="main">
-      <div class="trends-panel">
-        <div class="panel-title">
-          <span class="live-dot"></span>
-          Click any trend → Get ready-to-post content
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-title">Trending Topics</div>
+          <div class="category-tabs">
+            <button class="cat-tab active" data-cat="all">All</button>
+            <button class="cat-tab" data-cat="fashion">Fashion</button>
+            <button class="cat-tab" data-cat="watches">Watches</button>
+            <button class="cat-tab" data-cat="lifestyle">Lifestyle</button>
+            <button class="cat-tab" data-cat="style">Style Icons</button>
+          </div>
         </div>
-        <div class="trends-list" id="trendsList">
-          <div class="loading"><div class="spinner"></div>Loading trends...</div>
+        <div class="topics-list" id="topicsList">
+          <div class="loading">
+            <div class="spinner"></div>
+            <span>Loading trends...</span>
+          </div>
         </div>
       </div>
 
       <div class="content-panel">
         <div class="content-header">
-          <button class="platform-tab active" data-platform="linkedin">💼 LinkedIn</button>
-          <button class="platform-tab" data-platform="instagram">📸 Instagram</button>
-          <button class="platform-tab" data-platform="facebook">👥 Facebook</button>
-          <button class="platform-tab" data-platform="blog">📝 Blog</button>
-        </div>
-        <div class="content-body" id="contentBody">
-          <div class="content-empty">
-            <div class="content-empty-icon">👈</div>
-            <div>Select a trending topic</div>
-            <div style="color:var(--text-muted);font-size:12px;">Content ready instantly - no API needed</div>
+          <div class="platform-tabs">
+            <button class="platform-tab active" data-platform="linkedin">💼 LinkedIn</button>
+            <button class="platform-tab" data-platform="instagram">📸 Instagram</button>
+            <button class="platform-tab" data-platform="facebook">👥 Facebook</button>
+            <button class="platform-tab" data-platform="blog">📝 Blog</button>
           </div>
         </div>
+        <div class="content-body" id="contentBody">
+          <div class="empty-state">
+            <div class="empty-icon">✨</div>
+            <div class="empty-text">Select a trending topic</div>
+            <div class="empty-hint">AI will generate unique content for each platform</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal">
+      <h3>Content Generator Setup</h3>
+      <p>Enter your Cloudflare Worker URL. Deploy the worker from <code>/cloudflare-worker</code> folder, then paste the URL here.</p>
+      <div class="form-group">
+        <label>Worker URL</label>
+        <input type="url" id="workerUrl" placeholder="https://stitch-content-generator.YOUR-SUBDOMAIN.workers.dev">
+      </div>
+      <div class="modal-actions">
+        <button class="btn" id="btnCancelSettings">Cancel</button>
+        <button class="btn btn-gold" id="btnSaveSettings">Save & Test</button>
       </div>
     </div>
   </div>
@@ -399,274 +555,412 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    let state = {
-      trends: [],
-      selectedTrend: null,
+    // ═══════════════════════════════════════════════════════════════════
+    // STATE
+    // ═══════════════════════════════════════════════════════════════════
+    const state = {
+      workerUrl: localStorage.getItem('worker_url') || '',
+      topics: [],
+      selectedTopic: null,
       platform: 'linkedin',
       content: {},
-      countdown: 300
+      category: 'all'
     };
 
-    const KEYWORDS = ['bespoke suit bangkok', 'tailor bangkok', 'custom suit thailand', 'suits thailand'];
-
-    // Content templates - no API needed
-    const TEMPLATES = {
-      linkedin: (topic) => ({
-        text: `🎯 Industry Insight: ${topic}
-
-The tailoring industry in Bangkok continues to evolve, and this trend is worth your attention.
-
-Here's why this matters for professionals:
-
-✅ Quality craftsmanship at competitive prices
-✅ Customization options that rival European tailors
-✅ Quick turnaround for business travelers
-✅ Direct relationships with skilled artisans
-
-Whether you're building your professional wardrobe or advising clients, Bangkok's bespoke tailoring scene offers unmatched value.
-
-What's your experience with custom tailoring? Share in the comments 👇`,
-        hashtags: '#BespokeTailoring #Bangkok #MensFashion #ProfessionalStyle #CustomSuits'
-      }),
-
-      instagram: (topic) => ({
-        text: `✨ ${topic}
-
-Bangkok's tailoring scene is 🔥
-
-Here's the insider scoop:
-→ World-class fabrics
-→ Prices you won't believe
-→ 48-hour turnarounds
-→ Custom everything
-
-Your perfect suit is waiting in Bangkok 🇹🇭
-
-Save this for your next trip! 📌`,
-        hashtags: '#BangkokTailor #BespokeSuit #MensStyle #CustomTailoring #ThailandTravel #SuitUp #Menswear #DapperStyle #TailorMade #LuxuryFashion #StyleInspo #GentlemanStyle #SuitStyle #FashionBangkok #TravelThailand'
-      }),
-
-      facebook: (topic) => ({
-        text: `📢 Trending Now: ${topic}
-
-Have you heard about Bangkok's incredible tailoring scene?
-
-I've been researching this trend, and here's what stands out:
-
-🧵 Master tailors with decades of experience
-💰 Prices 60-70% lower than Western alternatives
-✈️ Perfect for business travelers on tight schedules
-👔 Truly custom fits - not just alterations
-
-The quality rivals Savile Row at a fraction of the cost. Many travelers are now planning trips specifically for wardrobe upgrades!
-
-Has anyone here tried Bangkok tailors? Would love to hear your experiences!
-
-Share this with someone planning a Thailand trip! 🇹🇭`,
-        hashtags: '#Bangkok #CustomSuits #Travel'
-      }),
-
-      blog: (topic) => ({
-        text: `# ${topic}
-
-## The Rise of Bangkok's Bespoke Tailoring Scene
-
-Bangkok has quietly become one of the world's premier destinations for custom tailoring, attracting discerning professionals and style-conscious travelers from around the globe.
-
-### Why Bangkok?
-
-The city offers a unique combination of skilled craftsmanship, quality materials, and competitive pricing that's difficult to find elsewhere. Unlike mass-market alternatives, Bangkok's best tailors provide truly bespoke services—creating patterns from scratch based on individual measurements.
-
-### What to Expect
-
-- **Consultation**: Discuss style preferences, fabric choices, and intended use
-- **Measurements**: Detailed measurements ensure a perfect fit
-- **Fitting**: One or two fittings to refine the final product
-- **Delivery**: Most orders completed within 48-72 hours
-
-### The Bottom Line
-
-For professionals seeking quality tailoring without the premium price tag, Bangkok represents an compelling option worth serious consideration.
-
-*Planning a visit? Research reputable tailors in the Sukhumvit area and book appointments in advance for the best experience.*`,
-        hashtags: '#BespokeTailoring #Bangkok #MensFashion #CustomSuits #TravelTips'
-      })
+    // ═══════════════════════════════════════════════════════════════════
+    // TREND SOURCES - Men's Luxury Lifestyle
+    // ═══════════════════════════════════════════════════════════════════
+    const SOURCES = {
+      fashion: [
+        'mens fashion trends',
+        'bespoke suit style',
+        'designer menswear',
+        'fashion week mens'
+      ],
+      watches: [
+        'luxury watches news',
+        'Rolex Patek Philippe',
+        'watch collector',
+        'horology trends'
+      ],
+      lifestyle: [
+        'luxury cars lifestyle',
+        'gentleman lifestyle',
+        'luxury gadgets tech',
+        'premium accessories'
+      ],
+      style: [
+        'celebrity mens style',
+        'athlete fashion',
+        'best dressed men',
+        'red carpet mens fashion'
+      ]
     };
 
-    async function fetchRedditTrends() {
-      const results = [];
-      for (const keyword of KEYWORDS) {
-        try {
-          const res = await fetch(`https://www.reddit.com/search.json?q=${encodeURIComponent(keyword)}&sort=relevance&limit=3&t=week`);
-          if (res.ok) {
-            const data = await res.json();
-            data.data.children.forEach(post => {
-              results.push({ title: post.data.title, source: 'reddit', score: post.data.score + post.data.num_comments });
-            });
-          }
-        } catch (e) {}
-        await new Promise(r => setTimeout(r, 150));
-      }
-      return results;
-    }
+    const CATEGORY_LABELS = {
+      fashion: '👔 Fashion',
+      watches: '⌚ Watches',
+      lifestyle: '🚗 Lifestyle',
+      style: '⭐ Style Icons'
+    };
 
-    async function fetchGoogleNews() {
+    // ═══════════════════════════════════════════════════════════════════
+    // FETCH TOPICS
+    // ═══════════════════════════════════════════════════════════════════
+    async function fetchGoogleNews(query, category) {
       const results = [];
       try {
-        const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent('bangkok tailor suit')}&hl=en`;
-        const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(rssUrl)}`);
+        const url = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=en-US&gl=US&ceid=US:en`;
+        const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
         if (res.ok) {
           const text = await res.text();
           const parser = new DOMParser();
           const xml = parser.parseFromString(text, 'text/xml');
           xml.querySelectorAll('item').forEach((item, i) => {
-            if (i < 3) {
-              results.push({ title: (item.querySelector('title')?.textContent || '').replace(/ - .*$/, ''), source: 'google', score: 70 });
+            if (i < 2) {
+              const title = (item.querySelector('title')?.textContent || '').replace(/ - .*$/, '');
+              if (title.length > 20) {
+                results.push({
+                  title,
+                  category,
+                  source: 'Google News',
+                  time: 'Today'
+                });
+              }
             }
           });
         }
-      } catch (e) {}
+      } catch (e) {
+        console.warn('News fetch failed:', query);
+      }
       return results;
     }
 
-    async function fetchAllTrends() {
-      const [reddit, google] = await Promise.all([fetchRedditTrends(), fetchGoogleNews()]);
-      const all = [...reddit, ...google];
+    async function fetchReddit(subreddit, category) {
+      const results = [];
+      try {
+        const res = await fetch(`https://www.reddit.com/r/${subreddit}/hot.json?limit=3`);
+        if (res.ok) {
+          const data = await res.json();
+          data.data.children.forEach(post => {
+            if (!post.data.stickied && post.data.title.length > 20) {
+              results.push({
+                title: post.data.title,
+                category,
+                source: `r/${subreddit}`,
+                time: 'Trending',
+                score: post.data.score
+              });
+            }
+          });
+        }
+      } catch (e) {
+        console.warn('Reddit fetch failed:', subreddit);
+      }
+      return results;
+    }
 
+    async function fetchAllTopics() {
+      const allTopics = [];
+
+      // Fetch from multiple sources
+      const fetches = [
+        // Fashion
+        fetchGoogleNews('mens fashion trends 2024', 'fashion'),
+        fetchGoogleNews('bespoke tailoring style', 'fashion'),
+        fetchReddit('malefashionadvice', 'fashion'),
+
+        // Watches
+        fetchGoogleNews('luxury watches Rolex Omega', 'watches'),
+        fetchReddit('Watches', 'watches'),
+
+        // Lifestyle
+        fetchGoogleNews('luxury cars lifestyle', 'lifestyle'),
+        fetchGoogleNews('premium gadgets', 'lifestyle'),
+
+        // Style Icons
+        fetchGoogleNews('celebrity mens style red carpet', 'style'),
+        fetchGoogleNews('athlete fashion NBA', 'style')
+      ];
+
+      const results = await Promise.all(fetches);
+      results.forEach(r => allTopics.push(...r));
+
+      // Deduplicate and sort
       const seen = new Set();
-      const unique = all.filter(item => {
-        const key = item.title.toLowerCase().slice(0, 30);
+      const unique = allTopics.filter(t => {
+        const key = t.title.toLowerCase().slice(0, 40);
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
       });
 
-      unique.sort((a, b) => b.score - a.score);
+      // Sort by score if available, otherwise keep order
+      unique.sort((a, b) => (b.score || 50) - (a.score || 50));
 
-      const fallback = [
-        { title: "Bespoke Suits in Bangkok: Why Tourists Are Flying In Just to Get Tailored", source: "google", score: 100 },
-        { title: "Thailand vs Hong Kong: Which Has the Best Custom Tailors?", source: "reddit", score: 85 },
-        { title: "How to Order a Suit from a Thai Tailor Without Getting Scammed", source: "reddit", score: 70 },
-        { title: "The Best Tailors on Sukhumvit Road — 2025 Guide", source: "google", score: 60 },
-        { title: "Shipping Custom Suits from Thailand: What You Need to Know", source: "reddit", score: 50 }
-      ];
-
-      const trends = unique.length >= 3 ? unique.slice(0, 5) : fallback;
-
-      return trends.map((t, i) => ({
-        rank: i + 1,
-        title: t.title,
-        sources: [t.source],
-        volume: `${Math.floor(t.score / 10) || 5}.${t.score % 10}k`,
-        change: ['+38%', '+21%', 'NEW', '-5%', '+12%'][i],
-        trend: ['up', 'up', 'new', 'down', 'up'][i]
-      }));
+      return unique.slice(0, 12);
     }
 
-    function renderTrends() {
-      const list = document.getElementById('trendsList');
-      list.innerHTML = state.trends.map((t, i) => `
-        <div class="trend-item ${state.selectedTrend === i ? 'selected' : ''}" data-index="${i}">
-          <div class="trend-header">
-            <span class="trend-rank">${t.rank}</span>
-            <span class="trend-title">${t.title}</span>
-          </div>
-          <div class="trend-meta">
-            ${t.sources.map(s => `<span class="source-dot ${s}">${s[0].toUpperCase()}</span>`).join('')}
-            <span>${t.volume} mentions</span>
-            <span class="trend-change ${t.trend}">${t.trend === 'up' ? '↑' : t.trend === 'down' ? '↓' : '★'} ${t.change}</span>
+    // ═══════════════════════════════════════════════════════════════════
+    // RENDER TOPICS
+    // ═══════════════════════════════════════════════════════════════════
+    function renderTopics() {
+      const list = document.getElementById('topicsList');
+      let topics = state.topics;
+
+      if (state.category !== 'all') {
+        topics = topics.filter(t => t.category === state.category);
+      }
+
+      if (topics.length === 0) {
+        list.innerHTML = `<div class="empty-state" style="padding:40px;"><div class="empty-hint">No topics in this category</div></div>`;
+        return;
+      }
+
+      list.innerHTML = topics.map((t, i) => `
+        <div class="topic-card ${state.selectedTopic === i ? 'selected' : ''}" data-index="${i}">
+          <div class="topic-category">${CATEGORY_LABELS[t.category] || t.category}</div>
+          <div class="topic-title">${t.title}</div>
+          <div class="topic-meta">
+            <span class="topic-source">${t.source}</span>
+            <span>${t.time}</span>
           </div>
         </div>
       `).join('');
 
-      list.querySelectorAll('.trend-item').forEach(item => {
-        item.onclick = () => selectTrend(parseInt(item.dataset.index));
+      list.querySelectorAll('.topic-card').forEach(card => {
+        card.onclick = () => selectTopic(parseInt(card.dataset.index));
       });
     }
 
-    function selectTrend(index) {
-      state.selectedTrend = index;
-      const trend = state.trends[index];
+    // ═══════════════════════════════════════════════════════════════════
+    // SELECT TOPIC & GENERATE
+    // ═══════════════════════════════════════════════════════════════════
+    async function selectTopic(index) {
+      if (!state.workerUrl) {
+        document.getElementById('settingsModal').classList.add('open');
+        return;
+      }
 
-      // Generate content instantly using templates
-      state.content = {
-        linkedin: TEMPLATES.linkedin(trend.title),
-        instagram: TEMPLATES.instagram(trend.title),
-        facebook: TEMPLATES.facebook(trend.title),
-        blog: TEMPLATES.blog(trend.title)
-      };
+      state.selectedTopic = index;
+      state.content = {};
+      renderTopics();
 
-      renderTrends();
+      const topic = state.topics[index];
+
+      document.getElementById('contentBody').innerHTML = `
+        <div class="loading">
+          <div class="spinner"></div>
+          <span>Generating content for all platforms...</span>
+        </div>
+      `;
+
+      // Generate for all platforms
+      const platforms = ['linkedin', 'instagram', 'facebook', 'blog'];
+
+      for (const platform of platforms) {
+        try {
+          const res = await fetch(state.workerUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              topic: topic.title,
+              category: topic.category,
+              platform
+            })
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            state.content[platform] = data;
+          } else {
+            state.content[platform] = { text: 'Failed to generate. Check worker setup.', hashtags: '' };
+          }
+        } catch (e) {
+          state.content[platform] = { text: 'Error connecting to worker. Check URL.', hashtags: '' };
+        }
+      }
+
       renderContent();
     }
 
+    // ═══════════════════════════════════════════════════════════════════
+    // RENDER CONTENT
+    // ═══════════════════════════════════════════════════════════════════
     function renderContent() {
-      const c = state.content[state.platform];
-      if (!c) return;
+      const content = state.content[state.platform];
+      if (!content) {
+        document.getElementById('contentBody').innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">⏳</div>
+            <div class="empty-text">Generating...</div>
+          </div>
+        `;
+        return;
+      }
 
-      const names = { linkedin: '💼 LinkedIn', instagram: '📸 Instagram', facebook: '👥 Facebook', blog: '📝 Blog' };
+      const platformNames = {
+        linkedin: '💼 LinkedIn Post',
+        instagram: '📸 Instagram Caption',
+        facebook: '👥 Facebook Post',
+        blog: '📝 Blog Article'
+      };
 
       document.getElementById('contentBody').innerHTML = `
         <div class="content-card">
           <div class="content-card-header">
-            <span>${names[state.platform]} - Ready to Post</span>
-            <button class="btn" onclick="copy('text')">📋 Copy Text</button>
+            <span class="card-label">${platformNames[state.platform]}</span>
+            <button class="btn" onclick="copyText()">📋 Copy</button>
           </div>
-          <div class="content-text">${c.text}</div>
-          <div class="content-hashtags">
-            <span>${c.hashtags}</span>
-            <button class="btn" onclick="copy('hashtags')">📋 Copy Tags</button>
-          </div>
+          <div class="content-text">${content.text || ''}</div>
+          ${content.hashtags ? `
+            <div class="content-hashtags">
+              <span class="hashtags-text">${content.hashtags}</span>
+              <button class="btn" onclick="copyHashtags()">📋</button>
+            </div>
+          ` : ''}
         </div>
-        <button class="btn btn-success copy-all-btn" onclick="copy('all')">
-          📋 Copy Everything — Ready to Paste
+        <button class="btn btn-gold copy-all-btn" onclick="copyAll()">
+          📋 Copy Everything — Ready to Post
         </button>
       `;
     }
 
-    function copy(type) {
+    // ═══════════════════════════════════════════════════════════════════
+    // COPY FUNCTIONS
+    // ═══════════════════════════════════════════════════════════════════
+    function copyText() {
       const c = state.content[state.platform];
-      let text = type === 'text' ? c.text : type === 'hashtags' ? c.hashtags : c.text + '\n\n' + c.hashtags;
-      navigator.clipboard.writeText(text);
-      showToast('Copied!');
+      if (c?.text) {
+        navigator.clipboard.writeText(c.text);
+        showToast('Text copied!');
+      }
     }
 
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2000);
+    function copyHashtags() {
+      const c = state.content[state.platform];
+      if (c?.hashtags) {
+        navigator.clipboard.writeText(c.hashtags);
+        showToast('Hashtags copied!');
+      }
     }
 
-    async function refresh() {
-      document.getElementById('trendsList').innerHTML = '<div class="loading"><div class="spinner"></div>Loading...</div>';
-      state.trends = await fetchAllTrends();
-      state.selectedTrend = null;
-      state.content = {};
-      state.countdown = 300;
-      renderTrends();
-      document.getElementById('contentBody').innerHTML = `<div class="content-empty"><div class="content-empty-icon">👈</div><div>Select a trending topic</div></div>`;
+    function copyAll() {
+      const c = state.content[state.platform];
+      if (c) {
+        const full = c.text + (c.hashtags ? '\n\n' + c.hashtags : '');
+        navigator.clipboard.writeText(full);
+        showToast('Copied to clipboard!');
+      }
     }
 
-    function tick() {
-      state.countdown--;
-      if (state.countdown <= 0) { state.countdown = 300; refresh(); }
-      document.getElementById('countdown').textContent = `${Math.floor(state.countdown/60)}:${(state.countdown%60).toString().padStart(2,'0')}`;
+    function showToast(msg, isError = false) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.className = `toast show ${isError ? 'error' : ''}`;
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // WORKER STATUS
+    // ═══════════════════════════════════════════════════════════════════
+    async function checkWorkerStatus() {
+      const dot = document.getElementById('statusDot');
+      const text = document.getElementById('statusText');
+
+      if (!state.workerUrl) {
+        dot.classList.add('offline');
+        text.textContent = 'Not configured';
+        return;
+      }
+
+      try {
+        const res = await fetch(state.workerUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ topic: 'test', platform: 'linkedin' })
+        });
+
+        if (res.ok) {
+          dot.classList.remove('offline');
+          text.textContent = 'Connected';
+        } else {
+          dot.classList.add('offline');
+          text.textContent = 'Error';
+        }
+      } catch (e) {
+        dot.classList.add('offline');
+        text.textContent = 'Offline';
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // INIT
+    // ═══════════════════════════════════════════════════════════════════
+    async function init() {
+      checkWorkerStatus();
+
+      state.topics = await fetchAllTopics();
+      renderTopics();
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      refresh();
-      setInterval(tick, 1000);
-      document.getElementById('btnRefresh').onclick = refresh;
+      init();
 
+      // Refresh
+      document.getElementById('btnRefresh').onclick = async () => {
+        document.getElementById('topicsList').innerHTML = `<div class="loading"><div class="spinner"></div><span>Loading...</span></div>`;
+        state.topics = await fetchAllTopics();
+        state.selectedTopic = null;
+        state.content = {};
+        renderTopics();
+        document.getElementById('contentBody').innerHTML = `<div class="empty-state"><div class="empty-icon">✨</div><div class="empty-text">Select a trending topic</div></div>`;
+      };
+
+      // Category tabs
+      document.querySelectorAll('.cat-tab').forEach(tab => {
+        tab.onclick = () => {
+          document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          state.category = tab.dataset.cat;
+          renderTopics();
+        };
+      });
+
+      // Platform tabs
       document.querySelectorAll('.platform-tab').forEach(tab => {
         tab.onclick = () => {
           document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
           tab.classList.add('active');
           state.platform = tab.dataset.platform;
-          if (state.content[state.platform]) renderContent();
+          if (Object.keys(state.content).length > 0) renderContent();
         };
       });
+
+      // Settings modal
+      document.getElementById('btnSettings').onclick = () => {
+        document.getElementById('workerUrl').value = state.workerUrl;
+        document.getElementById('settingsModal').classList.add('open');
+      };
+
+      document.getElementById('btnCancelSettings').onclick = () => {
+        document.getElementById('settingsModal').classList.remove('open');
+      };
+
+      document.getElementById('btnSaveSettings').onclick = async () => {
+        const url = document.getElementById('workerUrl').value.trim();
+        state.workerUrl = url;
+        localStorage.setItem('worker_url', url);
+        document.getElementById('settingsModal').classList.remove('open');
+        await checkWorkerStatus();
+        showToast('Settings saved!');
+      };
+
+      document.getElementById('settingsModal').onclick = (e) => {
+        if (e.target.id === 'settingsModal') {
+          document.getElementById('settingsModal').classList.remove('open');
+        }
+      };
     });
   </script>
 </body>
