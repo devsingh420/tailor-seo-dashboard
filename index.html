@@ -37,7 +37,6 @@
       grid-template-rows: 56px 1fr;
     }
 
-    /* HEADER */
     header {
       padding: 0 24px;
       display: flex;
@@ -71,13 +70,7 @@
     .header-center {
       display: flex;
       align-items: center;
-      gap: 24px;
-    }
-
-    .refresh-status {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      gap: 16px;
       font-size: 13px;
       color: var(--text-secondary);
     }
@@ -107,17 +100,12 @@
       cursor: pointer;
       font-family: inherit;
       transition: all 0.15s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
     .btn:hover { background: var(--surface-hover); }
-    .btn-primary { background: var(--accent); border-color: var(--accent); }
-    .btn-primary:hover { background: #409CFF; }
-    .btn-success { background: var(--green); border-color: var(--green); color: #000; }
+    .btn-success { background: var(--green); border-color: var(--green); color: #000; font-weight: 600; }
+    .btn-success:hover { background: #5DE77A; }
 
-    /* MAIN LAYOUT */
     .main {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -125,31 +113,24 @@
       overflow: hidden;
     }
 
-    /* LEFT PANEL - TRENDS */
     .trends-panel {
       padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 12px;
       overflow: hidden;
       border-right: 1px solid var(--border);
     }
 
-    .panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
     .panel-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
+      color: var(--text-secondary);
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    /* TRENDS LIST */
     .trends-list {
       flex: 1;
       overflow-y: auto;
@@ -160,60 +141,52 @@
 
     .trend-item {
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 2px solid var(--border);
       border-radius: 12px;
       padding: 16px;
       cursor: pointer;
       transition: all 0.15s;
     }
 
-    .trend-item:hover { background: var(--surface-hover); border-color: var(--accent); }
-    .trend-item.selected { border-color: var(--accent); background: rgba(10,132,255,0.15); }
-    .trend-item.generating { opacity: 0.7; pointer-events: none; }
+    .trend-item:hover { background: var(--surface-hover); border-color: rgba(255,255,255,0.2); }
+    .trend-item.selected { border-color: var(--accent); background: rgba(10,132,255,0.1); }
 
     .trend-header {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 12px;
-      margin-bottom: 8px;
     }
 
     .trend-rank {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
       color: var(--text-muted);
-      min-width: 24px;
+      min-width: 28px;
     }
 
     .trend-item:nth-child(1) .trend-rank { color: var(--accent); }
-    .trend-item:nth-child(2) .trend-rank { color: var(--text-secondary); }
 
     .trend-title {
       font-size: 14px;
       font-weight: 500;
       line-height: 1.4;
-      flex: 1;
     }
 
     .trend-meta {
       display: flex;
       align-items: center;
-      gap: 12px;
-      font-size: 12px;
+      gap: 10px;
+      font-size: 11px;
       color: var(--text-muted);
-      margin-left: 36px;
-    }
-
-    .trend-sources {
-      display: flex;
-      gap: 4px;
+      margin-top: 10px;
+      margin-left: 40px;
     }
 
     .source-dot {
       width: 16px;
       height: 16px;
       border-radius: 4px;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       font-size: 8px;
@@ -223,20 +196,18 @@
 
     .source-dot.google { background: #4285F4; }
     .source-dot.reddit { background: #FF4500; }
-    .source-dot.twitter { background: #000; border: 1px solid var(--border); }
+    .source-dot.twitter { background: #1DA1F2; }
 
     .trend-change {
-      font-size: 11px;
-      font-weight: 600;
       padding: 2px 6px;
       border-radius: 4px;
+      font-weight: 600;
     }
 
     .trend-change.up { color: var(--green); background: rgba(48,209,88,0.15); }
     .trend-change.down { color: var(--red); background: rgba(255,69,58,0.15); }
     .trend-change.new { color: var(--orange); background: rgba(255,159,10,0.15); }
 
-    /* RIGHT PANEL - CONTENT */
     .content-panel {
       display: flex;
       flex-direction: column;
@@ -245,25 +216,11 @@
     }
 
     .content-header {
-      padding: 16px 20px;
+      padding: 14px 20px;
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      justify-content: space-between;
-    }
-
-    .content-header h2 {
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    /* PLATFORM TABS */
-    .platform-tabs {
-      display: flex;
-      gap: 4px;
-      background: var(--surface);
-      padding: 4px;
-      border-radius: 10px;
+      gap: 8px;
     }
 
     .platform-tab {
@@ -273,19 +230,15 @@
       border-radius: 8px;
       cursor: pointer;
       color: var(--text-secondary);
-      border: none;
-      background: transparent;
+      border: 1px solid var(--border);
+      background: var(--surface);
       font-family: inherit;
       transition: all 0.15s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
-    .platform-tab:hover { color: var(--text); }
-    .platform-tab.active { background: var(--accent); color: #fff; }
+    .platform-tab:hover { color: var(--text); background: var(--surface-hover); }
+    .platform-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-    /* CONTENT AREA */
     .content-body {
       flex: 1;
       padding: 20px;
@@ -303,13 +256,11 @@
       justify-content: center;
       color: var(--text-muted);
       text-align: center;
-      gap: 12px;
+      gap: 8px;
+      font-size: 14px;
     }
 
-    .content-empty-icon {
-      font-size: 48px;
-      opacity: 0.5;
-    }
+    .content-empty-icon { font-size: 40px; opacity: 0.5; }
 
     .content-card {
       background: var(--surface);
@@ -324,25 +275,16 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(255,255,255,0.02);
-    }
-
-    .content-card-title {
       font-size: 12px;
       font-weight: 600;
       color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
 
-    .content-card-body {
+    .content-text {
       padding: 16px;
       font-size: 14px;
       line-height: 1.7;
       white-space: pre-wrap;
-      max-height: 300px;
-      overflow-y: auto;
     }
 
     .content-hashtags {
@@ -351,21 +293,41 @@
       font-size: 13px;
       color: var(--accent);
       background: rgba(10,132,255,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
-    .btn-copy {
-      padding: 6px 12px;
-      font-size: 11px;
-      gap: 4px;
+    .copy-all-btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
-    .btn-copy.copied {
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
       background: var(--green);
-      border-color: var(--green);
       color: #000;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s;
+      z-index: 200;
     }
 
-    /* LOADING */
+    .toast.show { opacity: 1; transform: translateY(0); }
+
     .loading {
       display: flex;
       align-items: center;
@@ -384,63 +346,8 @@
       animation: spin 0.8s linear infinite;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* TOAST */
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: var(--green);
-      color: #000;
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 500;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all 0.3s;
-      z-index: 200;
-    }
-
-    .toast.show { opacity: 1; transform: translateY(0); }
-    .toast.error { background: var(--red); color: #fff; }
-
-    /* API Modal */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(10px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-    }
-
-    .modal-overlay.open { display: flex; }
-
-    .modal {
-      background: #1C1C1E;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-      width: 400px;
-      max-width: 90vw;
-    }
-
-    .modal h3 { font-size: 18px; margin-bottom: 8px; }
-    .modal p { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5; }
-    .modal .form-group { margin-bottom: 16px; }
-    .modal label { display: block; font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; }
-    .modal input { width: 100%; background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 8px; font-size: 14px; font-family: inherit; }
-    .modal input:focus { outline: none; border-color: var(--accent); }
-    .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
-    .modal-actions .btn { flex: 1; justify-content: center; padding: 12px; }
-
-    /* Scrollbar */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
@@ -454,63 +361,37 @@
         Stitch Intelligence
       </div>
       <div class="header-center">
-        <div class="refresh-status">
-          <span class="live-dot"></span>
-          <span>Auto-refresh every 5 min</span>
-          <span id="countdown" style="color:var(--text-muted);">5:00</span>
-        </div>
-        <button class="btn" id="btnRefresh">Refresh</button>
+        <span class="live-dot"></span>
+        <span>Live trends • Auto-refresh <span id="countdown">5:00</span></span>
       </div>
-      <button class="btn" id="btnSettings">API Key</button>
+      <button class="btn" id="btnRefresh">↻ Refresh</button>
     </header>
 
     <div class="main">
-      <!-- TRENDS -->
       <div class="trends-panel">
-        <div class="panel-header">
-          <div class="panel-title">
-            <span class="live-dot"></span>
-            Click a trend to generate content
-          </div>
+        <div class="panel-title">
+          <span class="live-dot"></span>
+          Click any trend → Get ready-to-post content
         </div>
         <div class="trends-list" id="trendsList">
           <div class="loading"><div class="spinner"></div>Loading trends...</div>
         </div>
       </div>
 
-      <!-- CONTENT -->
       <div class="content-panel">
         <div class="content-header">
-          <h2>Generated Content</h2>
-          <div class="platform-tabs">
-            <button class="platform-tab active" data-platform="linkedin">💼 LinkedIn</button>
-            <button class="platform-tab" data-platform="instagram">📸 Instagram</button>
-            <button class="platform-tab" data-platform="facebook">👥 Facebook</button>
-            <button class="platform-tab" data-platform="blog">📝 Blog</button>
-          </div>
+          <button class="platform-tab active" data-platform="linkedin">💼 LinkedIn</button>
+          <button class="platform-tab" data-platform="instagram">📸 Instagram</button>
+          <button class="platform-tab" data-platform="facebook">👥 Facebook</button>
+          <button class="platform-tab" data-platform="blog">📝 Blog</button>
         </div>
         <div class="content-body" id="contentBody">
           <div class="content-empty">
             <div class="content-empty-icon">👈</div>
-            <div>Select a trending topic<br><span style="color:var(--text-muted);">Content will be auto-generated</span></div>
+            <div>Select a trending topic</div>
+            <div style="color:var(--text-muted);font-size:12px;">Content ready instantly - no API needed</div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- API MODAL -->
-  <div class="modal-overlay" id="modalSettings">
-    <div class="modal">
-      <h3>OpenAI API Key</h3>
-      <p>Required for AI content generation. Get your key at <a href="https://platform.openai.com/api-keys" target="_blank" style="color:var(--accent)">platform.openai.com</a></p>
-      <div class="form-group">
-        <label>API Key</label>
-        <input type="password" id="inputApiKey" placeholder="sk-...">
-      </div>
-      <div class="modal-actions">
-        <button class="btn" id="btnCloseModal">Cancel</button>
-        <button class="btn btn-primary" id="btnSaveKey">Save</button>
       </div>
     </div>
   </div>
@@ -518,27 +399,100 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    // State
     let state = {
       trends: [],
       selectedTrend: null,
       platform: 'linkedin',
-      apiKey: localStorage.getItem('openai_api_key') || '',
-      generatedContent: {},
+      content: {},
       countdown: 300
     };
 
-    const KEYWORDS = ['bespoke suit bangkok', 'tailor bangkok', 'custom suit thailand', 'suits thailand', 'men tailor bangkok'];
+    const KEYWORDS = ['bespoke suit bangkok', 'tailor bangkok', 'custom suit thailand', 'suits thailand'];
 
-    const FALLBACK_TRENDS = [
-      { rank: 1, title: "Bespoke Suits in Bangkok: Why Tourists Are Flying In Just to Get Tailored", sources: ["google", "reddit"], volume: "12.4k", change: "+38%", trend: "up" },
-      { rank: 2, title: "Thailand vs Hong Kong: Which Has the Best Custom Tailors?", sources: ["twitter", "reddit"], volume: "8.1k", change: "+21%", trend: "up" },
-      { rank: 3, title: "How to Order a Suit from a Thai Tailor Without Getting Scammed", sources: ["reddit"], volume: "6.7k", change: "NEW", trend: "new" },
-      { rank: 4, title: "The Best Tailors on Sukhumvit Road — 2025 Guide", sources: ["google"], volume: "4.2k", change: "-5%", trend: "down" },
-      { rank: 5, title: "Shipping Custom Suits from Thailand: What You Need to Know", sources: ["google", "twitter"], volume: "3.8k", change: "+12%", trend: "up" }
-    ];
+    // Content templates - no API needed
+    const TEMPLATES = {
+      linkedin: (topic) => ({
+        text: `🎯 Industry Insight: ${topic}
 
-    // Fetch Reddit
+The tailoring industry in Bangkok continues to evolve, and this trend is worth your attention.
+
+Here's why this matters for professionals:
+
+✅ Quality craftsmanship at competitive prices
+✅ Customization options that rival European tailors
+✅ Quick turnaround for business travelers
+✅ Direct relationships with skilled artisans
+
+Whether you're building your professional wardrobe or advising clients, Bangkok's bespoke tailoring scene offers unmatched value.
+
+What's your experience with custom tailoring? Share in the comments 👇`,
+        hashtags: '#BespokeTailoring #Bangkok #MensFashion #ProfessionalStyle #CustomSuits'
+      }),
+
+      instagram: (topic) => ({
+        text: `✨ ${topic}
+
+Bangkok's tailoring scene is 🔥
+
+Here's the insider scoop:
+→ World-class fabrics
+→ Prices you won't believe
+→ 48-hour turnarounds
+→ Custom everything
+
+Your perfect suit is waiting in Bangkok 🇹🇭
+
+Save this for your next trip! 📌`,
+        hashtags: '#BangkokTailor #BespokeSuit #MensStyle #CustomTailoring #ThailandTravel #SuitUp #Menswear #DapperStyle #TailorMade #LuxuryFashion #StyleInspo #GentlemanStyle #SuitStyle #FashionBangkok #TravelThailand'
+      }),
+
+      facebook: (topic) => ({
+        text: `📢 Trending Now: ${topic}
+
+Have you heard about Bangkok's incredible tailoring scene?
+
+I've been researching this trend, and here's what stands out:
+
+🧵 Master tailors with decades of experience
+💰 Prices 60-70% lower than Western alternatives
+✈️ Perfect for business travelers on tight schedules
+👔 Truly custom fits - not just alterations
+
+The quality rivals Savile Row at a fraction of the cost. Many travelers are now planning trips specifically for wardrobe upgrades!
+
+Has anyone here tried Bangkok tailors? Would love to hear your experiences!
+
+Share this with someone planning a Thailand trip! 🇹🇭`,
+        hashtags: '#Bangkok #CustomSuits #Travel'
+      }),
+
+      blog: (topic) => ({
+        text: `# ${topic}
+
+## The Rise of Bangkok's Bespoke Tailoring Scene
+
+Bangkok has quietly become one of the world's premier destinations for custom tailoring, attracting discerning professionals and style-conscious travelers from around the globe.
+
+### Why Bangkok?
+
+The city offers a unique combination of skilled craftsmanship, quality materials, and competitive pricing that's difficult to find elsewhere. Unlike mass-market alternatives, Bangkok's best tailors provide truly bespoke services—creating patterns from scratch based on individual measurements.
+
+### What to Expect
+
+- **Consultation**: Discuss style preferences, fabric choices, and intended use
+- **Measurements**: Detailed measurements ensure a perfect fit
+- **Fitting**: One or two fittings to refine the final product
+- **Delivery**: Most orders completed within 48-72 hours
+
+### The Bottom Line
+
+For professionals seeking quality tailoring without the premium price tag, Bangkok represents an compelling option worth serious consideration.
+
+*Planning a visit? Research reputable tailors in the Sukhumvit area and book appointments in advance for the best experience.*`,
+        hashtags: '#BespokeTailoring #Bangkok #MensFashion #CustomSuits #TravelTips'
+      })
+    };
+
     async function fetchRedditTrends() {
       const results = [];
       for (const keyword of KEYWORDS) {
@@ -547,75 +501,66 @@
           if (res.ok) {
             const data = await res.json();
             data.data.children.forEach(post => {
-              results.push({
-                title: post.data.title,
-                source: 'reddit',
-                score: post.data.score + post.data.num_comments,
-                keyword
-              });
+              results.push({ title: post.data.title, source: 'reddit', score: post.data.score + post.data.num_comments });
             });
           }
         } catch (e) {}
-        await new Promise(r => setTimeout(r, 200));
+        await new Promise(r => setTimeout(r, 150));
       }
       return results;
     }
 
-    // Fetch Google News
-    async function fetchGoogleTrends() {
+    async function fetchGoogleNews() {
       const results = [];
-      for (const keyword of KEYWORDS.slice(0, 3)) {
-        try {
-          const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(keyword)}&hl=en-US&gl=US&ceid=US:en`;
-          const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(rssUrl)}`);
-          if (res.ok) {
-            const text = await res.text();
-            const parser = new DOMParser();
-            const xml = parser.parseFromString(text, 'text/xml');
-            xml.querySelectorAll('item').forEach((item, i) => {
-              if (i < 2) {
-                results.push({
-                  title: (item.querySelector('title')?.textContent || '').replace(/ - .*$/, ''),
-                  source: 'google',
-                  score: 80 - (i * 20),
-                  keyword
-                });
-              }
-            });
-          }
-        } catch (e) {}
-      }
+      try {
+        const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent('bangkok tailor suit')}&hl=en`;
+        const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(rssUrl)}`);
+        if (res.ok) {
+          const text = await res.text();
+          const parser = new DOMParser();
+          const xml = parser.parseFromString(text, 'text/xml');
+          xml.querySelectorAll('item').forEach((item, i) => {
+            if (i < 3) {
+              results.push({ title: (item.querySelector('title')?.textContent || '').replace(/ - .*$/, ''), source: 'google', score: 70 });
+            }
+          });
+        }
+      } catch (e) {}
       return results;
     }
 
     async function fetchAllTrends() {
-      const [reddit, google] = await Promise.all([fetchRedditTrends(), fetchGoogleTrends()]);
+      const [reddit, google] = await Promise.all([fetchRedditTrends(), fetchGoogleNews()]);
       const all = [...reddit, ...google];
 
-      const grouped = {};
-      all.forEach(item => {
-        const key = item.title.toLowerCase().slice(0, 40);
-        if (!grouped[key]) {
-          grouped[key] = { ...item, sources: [item.source], totalScore: 0 };
-        } else if (!grouped[key].sources.includes(item.source)) {
-          grouped[key].sources.push(item.source);
-        }
-        grouped[key].totalScore += item.score;
+      const seen = new Set();
+      const unique = all.filter(item => {
+        const key = item.title.toLowerCase().slice(0, 30);
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
       });
 
-      let trends = Object.values(grouped)
-        .sort((a, b) => b.totalScore - a.totalScore)
-        .slice(0, 5)
-        .map((t, i) => ({
-          rank: i + 1,
-          title: t.title,
-          sources: t.sources,
-          volume: t.totalScore >= 1000 ? `${(t.totalScore/1000).toFixed(1)}k` : `${t.totalScore}`,
-          change: ['+38%', '+21%', 'NEW', '-5%', '+12%'][i] || 'NEW',
-          trend: ['up', 'up', 'new', 'down', 'up'][i] || 'new'
-        }));
+      unique.sort((a, b) => b.score - a.score);
 
-      return trends.length > 0 ? trends : FALLBACK_TRENDS;
+      const fallback = [
+        { title: "Bespoke Suits in Bangkok: Why Tourists Are Flying In Just to Get Tailored", source: "google", score: 100 },
+        { title: "Thailand vs Hong Kong: Which Has the Best Custom Tailors?", source: "reddit", score: 85 },
+        { title: "How to Order a Suit from a Thai Tailor Without Getting Scammed", source: "reddit", score: 70 },
+        { title: "The Best Tailors on Sukhumvit Road — 2025 Guide", source: "google", score: 60 },
+        { title: "Shipping Custom Suits from Thailand: What You Need to Know", source: "reddit", score: 50 }
+      ];
+
+      const trends = unique.length >= 3 ? unique.slice(0, 5) : fallback;
+
+      return trends.map((t, i) => ({
+        rank: i + 1,
+        title: t.title,
+        sources: [t.source],
+        volume: `${Math.floor(t.score / 10) || 5}.${t.score % 10}k`,
+        change: ['+38%', '+21%', 'NEW', '-5%', '+12%'][i],
+        trend: ['up', 'up', 'new', 'down', 'up'][i]
+      }));
     }
 
     function renderTrends() {
@@ -627,9 +572,7 @@
             <span class="trend-title">${t.title}</span>
           </div>
           <div class="trend-meta">
-            <div class="trend-sources">
-              ${t.sources.map(s => `<span class="source-dot ${s}">${s[0].toUpperCase()}</span>`).join('')}
-            </div>
+            ${t.sources.map(s => `<span class="source-dot ${s}">${s[0].toUpperCase()}</span>`).join('')}
             <span>${t.volume} mentions</span>
             <span class="trend-change ${t.trend}">${t.trend === 'up' ? '↑' : t.trend === 'down' ? '↓' : '★'} ${t.change}</span>
           </div>
@@ -637,182 +580,93 @@
       `).join('');
 
       list.querySelectorAll('.trend-item').forEach(item => {
-        item.addEventListener('click', () => selectTrend(parseInt(item.dataset.index)));
+        item.onclick = () => selectTrend(parseInt(item.dataset.index));
       });
     }
 
-    async function selectTrend(index) {
-      if (!state.apiKey) {
-        document.getElementById('modalSettings').classList.add('open');
-        return;
-      }
-
+    function selectTrend(index) {
       state.selectedTrend = index;
-      state.generatedContent = {};
-      renderTrends();
-
       const trend = state.trends[index];
-      document.getElementById('contentBody').innerHTML = `
-        <div class="loading"><div class="spinner"></div>Generating content for all platforms...</div>
-      `;
 
-      // Generate for all platforms
-      const platforms = ['linkedin', 'instagram', 'facebook', 'blog'];
+      // Generate content instantly using templates
+      state.content = {
+        linkedin: TEMPLATES.linkedin(trend.title),
+        instagram: TEMPLATES.instagram(trend.title),
+        facebook: TEMPLATES.facebook(trend.title),
+        blog: TEMPLATES.blog(trend.title)
+      };
 
-      for (const platform of platforms) {
-        await generateForPlatform(trend.title, platform);
-      }
-
+      renderTrends();
       renderContent();
     }
 
-    async function generateForPlatform(topic, platform) {
-      const specs = {
-        linkedin: { format: 'LinkedIn post with a compelling hook, 3-4 value points, and a call-to-action. Professional tone.', length: 250, hashtags: 5 },
-        instagram: { format: 'Instagram caption with emojis, short punchy sentences, casual and engaging tone.', length: 150, hashtags: 15 },
-        facebook: { format: 'Facebook post that encourages engagement, shares, and comments. Friendly tone.', length: 200, hashtags: 3 },
-        blog: { format: 'Blog post intro paragraph and 3 key points with a conclusion. SEO-optimized, informative tone.', length: 400, hashtags: 5 }
-      };
-
-      const spec = specs[platform];
-      const prompt = `Write a ${spec.format}
-
-Topic: "${topic}"
-Industry: Bespoke tailoring in Bangkok, Thailand
-Max words: ${spec.length}
-Include ${spec.hashtags} relevant hashtags at the end.
-
-Return ONLY the content, no explanations or labels.`;
-
-      try {
-        const res = await fetch('https://api.openai.com/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${state.apiKey}`
-          },
-          body: JSON.stringify({
-            model: 'gpt-4o-mini',
-            messages: [{ role: 'user', content: prompt }],
-            max_tokens: 800,
-            temperature: 0.8
-          })
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          const content = data.choices[0].message.content;
-          const hashtags = content.match(/#[\w]+/g) || [];
-          const mainText = content.replace(/#[\w]+/g, '').trim();
-          state.generatedContent[platform] = { text: mainText, hashtags: hashtags.join(' ') };
-        } else {
-          state.generatedContent[platform] = { text: 'Failed to generate. Check API key.', hashtags: '' };
-        }
-      } catch (e) {
-        state.generatedContent[platform] = { text: 'Error generating content.', hashtags: '' };
-      }
-    }
-
     function renderContent() {
-      const content = state.generatedContent[state.platform];
-      if (!content) {
-        document.getElementById('contentBody').innerHTML = `<div class="content-empty"><div class="content-empty-icon">⏳</div><div>Generating...</div></div>`;
-        return;
-      }
+      const c = state.content[state.platform];
+      if (!c) return;
 
-      const platformNames = { linkedin: '💼 LinkedIn', instagram: '📸 Instagram', facebook: '👥 Facebook', blog: '📝 Blog' };
+      const names = { linkedin: '💼 LinkedIn', instagram: '📸 Instagram', facebook: '👥 Facebook', blog: '📝 Blog' };
 
       document.getElementById('contentBody').innerHTML = `
         <div class="content-card">
           <div class="content-card-header">
-            <span class="content-card-title">${platformNames[state.platform]} Post</span>
-            <button class="btn btn-copy" onclick="copyContent('text')">📋 Copy Text</button>
+            <span>${names[state.platform]} - Ready to Post</span>
+            <button class="btn" onclick="copy('text')">📋 Copy Text</button>
           </div>
-          <div class="content-card-body">${content.text}</div>
-          ${content.hashtags ? `
-            <div class="content-hashtags">
-              <div style="display:flex;justify-content:space-between;align-items:center;">
-                <span>${content.hashtags}</span>
-                <button class="btn btn-copy" onclick="copyContent('hashtags')" style="margin-left:12px;">📋 Copy Tags</button>
-              </div>
-            </div>
-          ` : ''}
+          <div class="content-text">${c.text}</div>
+          <div class="content-hashtags">
+            <span>${c.hashtags}</span>
+            <button class="btn" onclick="copy('hashtags')">📋 Copy Tags</button>
+          </div>
         </div>
-        <button class="btn btn-success" onclick="copyContent('all')" style="width:100%;justify-content:center;padding:14px;font-size:14px;">
-          📋 Copy Everything
+        <button class="btn btn-success copy-all-btn" onclick="copy('all')">
+          📋 Copy Everything — Ready to Paste
         </button>
       `;
     }
 
-    function copyContent(type) {
-      const content = state.generatedContent[state.platform];
-      if (!content) return;
-
-      let text = '';
-      if (type === 'text') text = content.text;
-      else if (type === 'hashtags') text = content.hashtags;
-      else text = content.text + '\n\n' + content.hashtags;
-
-      navigator.clipboard.writeText(text).then(() => {
-        showToast('Copied to clipboard!');
-      });
+    function copy(type) {
+      const c = state.content[state.platform];
+      let text = type === 'text' ? c.text : type === 'hashtags' ? c.hashtags : c.text + '\n\n' + c.hashtags;
+      navigator.clipboard.writeText(text);
+      showToast('Copied!');
     }
 
-    function showToast(msg, type = 'success') {
-      const toast = document.getElementById('toast');
-      toast.textContent = msg;
-      toast.className = `toast ${type} show`;
-      setTimeout(() => toast.classList.remove('show'), 3000);
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
     }
 
     async function refresh() {
       document.getElementById('trendsList').innerHTML = '<div class="loading"><div class="spinner"></div>Loading...</div>';
       state.trends = await fetchAllTrends();
       state.selectedTrend = null;
-      state.generatedContent = {};
+      state.content = {};
       state.countdown = 300;
       renderTrends();
       document.getElementById('contentBody').innerHTML = `<div class="content-empty"><div class="content-empty-icon">👈</div><div>Select a trending topic</div></div>`;
     }
 
-    function updateCountdown() {
+    function tick() {
       state.countdown--;
       if (state.countdown <= 0) { state.countdown = 300; refresh(); }
-      const m = Math.floor(state.countdown / 60);
-      const s = state.countdown % 60;
-      document.getElementById('countdown').textContent = `${m}:${s.toString().padStart(2, '0')}`;
+      document.getElementById('countdown').textContent = `${Math.floor(state.countdown/60)}:${(state.countdown%60).toString().padStart(2,'0')}`;
     }
 
-    // Init
     document.addEventListener('DOMContentLoaded', () => {
       refresh();
-      setInterval(updateCountdown, 1000);
-
+      setInterval(tick, 1000);
       document.getElementById('btnRefresh').onclick = refresh;
-      document.getElementById('btnSettings').onclick = () => {
-        document.getElementById('inputApiKey').value = state.apiKey;
-        document.getElementById('modalSettings').classList.add('open');
-      };
-      document.getElementById('btnCloseModal').onclick = () => document.getElementById('modalSettings').classList.remove('open');
-      document.getElementById('btnSaveKey').onclick = () => {
-        state.apiKey = document.getElementById('inputApiKey').value.trim();
-        localStorage.setItem('openai_api_key', state.apiKey);
-        document.getElementById('modalSettings').classList.remove('open');
-        showToast('API key saved!');
-      };
 
       document.querySelectorAll('.platform-tab').forEach(tab => {
         tab.onclick = () => {
           document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
           tab.classList.add('active');
           state.platform = tab.dataset.platform;
-          if (Object.keys(state.generatedContent).length > 0) renderContent();
+          if (state.content[state.platform]) renderContent();
         };
       });
-
-      document.getElementById('modalSettings').onclick = (e) => {
-        if (e.target.id === 'modalSettings') document.getElementById('modalSettings').classList.remove('open');
-      };
     });
   </script>
 </body>
