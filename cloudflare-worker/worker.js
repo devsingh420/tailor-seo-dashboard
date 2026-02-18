@@ -1,21 +1,19 @@
 /**
  * Stitch Intelligence - Content Generator Worker
- * Deploy to Cloudflare Workers
+ * Uses Claude (Anthropic) API
  *
- * Environment Variables needed:
- * - OPENAI_API_KEY: Your OpenAI API key
+ * Environment Variable needed:
+ * - ANTHROPIC_API_KEY: Your Anthropic API key
  */
 
 export default {
   async fetch(request, env) {
-    // CORS headers
     const corsHeaders = {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
     };
 
-    // Handle preflight
     if (request.method === 'OPTIONS') {
       return new Response(null, { headers: corsHeaders });
     }
@@ -38,44 +36,44 @@ export default {
         linkedin: {
           tone: 'professional, authoritative, thought-leadership',
           length: '200-250 words',
-          style: 'Start with a hook or insight. Use line breaks. Include 3-4 key points with emojis as bullets. End with a question or CTA.',
+          style: 'Start with a compelling hook. Use line breaks for readability. Include 3-4 key insights with emoji bullets. End with a question or call-to-action to drive engagement.',
           hashtags: 5
         },
         instagram: {
-          tone: 'aspirational, stylish, engaging, use emojis throughout',
+          tone: 'aspirational, stylish, engaging with emojis throughout',
           length: '100-150 words',
-          style: 'Punchy opening line. Short sentences. Lifestyle focused. Aspirational but relatable.',
+          style: 'Punchy opening line that grabs attention. Short, impactful sentences. Lifestyle-focused and aspirational but relatable. Use emojis naturally.',
           hashtags: 20
         },
         facebook: {
           tone: 'conversational, engaging, shareable',
           length: '150-200 words',
-          style: 'Personal angle. Ask questions. Encourage comments and shares. Friendly but knowledgeable.',
+          style: 'Personal, relatable angle. Ask questions to encourage comments. Make it shareable. Friendly but knowledgeable tone.',
           hashtags: 3
         },
         blog: {
           tone: 'informative, SEO-optimized, authoritative',
           length: '400-500 words',
-          style: 'Use markdown. Include H2 headers. Opening hook, 3 main sections, conclusion with CTA.',
+          style: 'Use markdown formatting. Include a compelling H1 title, engaging intro, 2-3 H2 sections with insights, and a conclusion with call-to-action.',
           hashtags: 5
         }
       };
 
       const spec = platformSpecs[platform];
 
-      const systemPrompt = `You are a luxury men's lifestyle content creator for "Stitch Intelligence" - a premium bespoke tailoring brand in Bangkok, Thailand.
+      const systemPrompt = `You are the content creator for "Stitch Intelligence" - a premium bespoke tailoring brand based in Bangkok, Thailand.
 
-Your expertise covers:
-- Bespoke suits and tailoring
-- Luxury watches (Rolex, Patek Philippe, Omega, etc.)
-- Designer shoes and leather goods
-- Accessories (ties, cufflinks, pocket squares)
-- Luxury automobiles
-- Premium gadgets and tech
+Your expertise covers the complete gentleman's lifestyle:
+- Bespoke suits and tailoring craftsmanship
+- Luxury timepieces (Rolex, Patek Philippe, Audemars Piguet, Omega)
+- Designer footwear and leather goods
+- Accessories (silk ties, cufflinks, pocket squares)
+- Luxury automobiles (Porsche, Mercedes, BMW, Bentley)
+- Premium gadgets and technology
 
-Brand voice: Sophisticated, knowledgeable, aspirational but approachable. You educate while inspiring.
+Brand voice: Sophisticated, knowledgeable, aspirational yet approachable. You educate while inspiring. Never salesy - always valuable content first.
 
-Target audience: Business professionals, executives, entrepreneurs, and style-conscious men who appreciate quality craftsmanship.`;
+Target audience: Business professionals, executives, entrepreneurs, and style-conscious men aged 30-55 who appreciate quality craftsmanship and the finer things in life.`;
 
       const userPrompt = `Create a ${platform.toUpperCase()} post about this trending topic:
 
@@ -87,41 +85,43 @@ Requirements:
 - Tone: ${spec.tone}
 - Length: ${spec.length}
 - Style: ${spec.style}
-- Include ${spec.hashtags} relevant hashtags at the end
-- Make it timely and relevant to current trends
-- Subtly connect to bespoke tailoring/men's style when natural
-- DO NOT use generic filler - be specific and insightful
+- Include exactly ${spec.hashtags} relevant hashtags at the end
+- Make it timely, insightful, and engaging
+- Subtly connect to men's style and craftsmanship when natural
+- Be specific with details - avoid generic statements
 
-Return ONLY the post content followed by hashtags. No labels or explanations.`;
+Return ONLY the post content followed by hashtags on a new line. No labels, explanations, or meta-commentary.`;
 
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${env.OPENAI_API_KEY}`
+          'x-api-key': env.ANTHROPIC_API_KEY,
+          'anthropic-version': '2023-06-01'
         },
         body: JSON.stringify({
-          model: 'gpt-4o-mini',
+          model: 'claude-3-haiku-20240307',
+          max_tokens: 1024,
           messages: [
-            { role: 'system', content: systemPrompt },
-            { role: 'user', content: userPrompt }
-          ],
-          max_tokens: 1000,
-          temperature: 0.85
+            {
+              role: 'user',
+              content: `${systemPrompt}\n\n${userPrompt}`
+            }
+          ]
         })
       });
 
       if (!response.ok) {
         const error = await response.text();
-        console.error('OpenAI Error:', error);
-        return new Response(JSON.stringify({ error: 'AI generation failed' }), {
+        console.error('Claude API Error:', error);
+        return new Response(JSON.stringify({ error: 'AI generation failed', details: error }), {
           status: 500,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });
       }
 
       const data = await response.json();
-      const content = data.choices[0].message.content;
+      const content = data.content[0].text;
 
       // Parse content and hashtags
       const hashtagMatch = content.match(/#[\w]+/g) || [];
