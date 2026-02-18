@@ -118,8 +118,9 @@
     }
 
     .btn:hover { background: var(--surface-hover); }
-    .btn-primary { background: var(--accent); border-color: var(--accent); }
+    .btn-primary { background: var(--accent); border-color: var(--accent); cursor: pointer; }
     .btn-primary:hover { background: #409CFF; }
+    .btn-primary:active { transform: scale(0.98); }
 
     /* MAIN LAYOUT */
     .main {
@@ -902,10 +903,14 @@
     // AI CONTENT GENERATION
     // ═══════════════════════════════════════════════════════════════════
     async function generateContent() {
+      console.log('generateContent called');
+
       const topic = document.getElementById('inputTopic').value;
       const tone = document.getElementById('inputTone').value;
       const context = document.getElementById('inputContext').value;
       const platform = state.platform;
+
+      console.log('Topic:', topic, 'API Key set:', !!state.apiKey);
 
       if (!topic) {
         showToast('Please enter or select a topic', 'error');
@@ -913,6 +918,7 @@
       }
 
       if (!state.apiKey) {
+        console.log('No API key, opening modal');
         document.getElementById('modalSettings').classList.add('open');
         return;
       }
@@ -1099,10 +1105,20 @@ Return ONLY the content, no explanations.`;
       });
 
       // Generate button
-      document.getElementById('btnGenerate').addEventListener('click', generateContent);
+      const genBtn = document.getElementById('btnGenerate');
+      if (genBtn) {
+        genBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          console.log('Generate clicked, apiKey:', state.apiKey ? 'set' : 'not set');
+          generateContent();
+        });
+      }
 
       // Copy button
-      document.getElementById('btnCopy').addEventListener('click', copyContent);
+      const copyBtn = document.getElementById('btnCopy');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', copyContent);
+      }
 
       // Settings modal
       document.getElementById('btnSettings').addEventListener('click', () => {
