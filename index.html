@@ -294,26 +294,89 @@
     }
 
     .content-text {
-      padding: 20px;
+      padding: 16px;
       font-size: 14px;
-      line-height: 1.8;
+      line-height: 1.7;
       white-space: pre-wrap;
     }
 
-    .content-hashtags {
-      padding: 14px 20px;
-      background: rgba(201,169,98,0.08);
-      border-top: 1px solid var(--border);
+    .content-textarea {
+      width: 100%;
+      min-height: 180px;
+      padding: 16px;
+      font-size: 14px;
+      line-height: 1.7;
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      resize: vertical;
+      outline: none;
+    }
+
+    .content-textarea.blog {
+      min-height: 320px;
+    }
+
+    .content-textarea:focus {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .content-textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    .hashtags-textarea {
+      width: 100%;
+      padding: 14px 16px;
       font-size: 13px;
+      line-height: 1.5;
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: rgba(201,169,98,0.08);
+      border: none;
+      border-top: 1px solid var(--border);
       color: var(--gold);
+      resize: none;
+      outline: none;
+      min-height: 60px;
+    }
+
+    .hashtags-textarea:focus {
+      background: rgba(201,169,98,0.12);
+    }
+
+    .content-section-label {
+      padding: 8px 16px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .content-hashtags {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hashtags-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
+      padding: 8px 16px;
+      background: rgba(201,169,98,0.05);
+      border-top: 1px solid var(--border);
     }
 
-    .hashtags-text { flex: 1; word-break: break-word; }
+    .char-count {
+      font-size: 11px;
+      color: var(--text-muted);
+      padding: 4px 16px;
+      text-align: right;
+      border-top: 1px solid var(--border);
+    }
 
     .copy-all-btn {
       width: 100%;
@@ -586,7 +649,11 @@ The goal isn't to follow fashion — it's to develop a personal style that serve
           const xml = parser.parseFromString(text, 'text/xml');
           xml.querySelectorAll('item').forEach((item, i) => {
             if (i < 2) {
-              const title = (item.querySelector('title')?.textContent || '').replace(/ - .*$/, '');
+              let title = (item.querySelector('title')?.textContent || '')
+                .replace(/ - .*$/, '')
+                .replace(/https?:\/\/[^\s]+/g, '')
+                .replace(/www\.[^\s]+/g, '')
+                .trim();
               if (title.length > 20) {
                 results.push({ title, category, source: 'Google News', time: 'Today' });
               }
@@ -604,9 +671,14 @@ The goal isn't to follow fashion — it's to develop a personal style that serve
         if (res.ok) {
           const data = await res.json();
           data.data.children.forEach(post => {
-            if (!post.data.stickied && post.data.title.length > 20) {
+            let title = post.data.title
+              .replace(/https?:\/\/[^\s]+/g, '')
+              .replace(/www\.[^\s]+/g, '')
+              .replace(/\s{2,}/g, ' ')
+              .trim();
+            if (!post.data.stickied && title.length > 20) {
               results.push({
-                title: post.data.title,
+                title,
                 category,
                 source: `r/${subreddit}`,
                 time: 'Trending',
@@ -711,38 +783,87 @@ The goal isn't to follow fashion — it's to develop a personal style that serve
         blog: '📝 Blog Article'
       };
 
+      const limits = {
+        linkedin: 3000,
+        instagram: 2200,
+        facebook: 63206,
+        blog: 50000
+      };
+
       document.getElementById('contentBody').innerHTML = `
         <div class="content-card">
           <div class="content-card-header">
             <span class="card-label">${names[state.platform]}</span>
-            <button class="btn" onclick="copyText()">📋 Copy</button>
+            <button class="btn" onclick="copyText()">📋 Copy Text</button>
           </div>
-          <div class="content-text">${content.text}</div>
+          <div class="content-section-label">Edit your content below</div>
+          <textarea class="content-textarea ${state.platform === 'blog' ? 'blog' : ''}" id="contentText" placeholder="Your content here...">${escapeHtml(stripUrls(content.text))}</textarea>
+          <div class="char-count"><span id="charCount">${content.text.length}</span> / ${limits[state.platform]} characters</div>
+
           <div class="content-hashtags">
-            <span class="hashtags-text">${content.hashtags}</span>
-            <button class="btn" onclick="copyHashtags()">📋</button>
+            <div class="hashtags-header">
+              <span class="card-label" style="padding:0;">Hashtags</span>
+              <button class="btn" onclick="copyHashtags()">📋 Copy</button>
+            </div>
+            <textarea class="hashtags-textarea" id="hashtagsText" placeholder="#hashtags">${content.hashtags}</textarea>
           </div>
         </div>
         <button class="btn btn-gold copy-all-btn" onclick="copyAll()">
           📋 Copy Everything — Ready to Post
         </button>
       `;
+
+      // Update character count on typing
+      const textArea = document.getElementById('contentText');
+      const charCount = document.getElementById('charCount');
+      textArea.addEventListener('input', () => {
+        charCount.textContent = textArea.value.length;
+        state.content[state.platform].text = textArea.value;
+      });
+
+      // Update hashtags on typing
+      document.getElementById('hashtagsText').addEventListener('input', (e) => {
+        state.content[state.platform].hashtags = e.target.value;
+      });
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function stripUrls(text) {
+      // Remove URLs (http, https, www)
+      return text
+        .replace(/https?:\/\/[^\s]+/g, '')
+        .replace(/www\.[^\s]+/g, '')
+        .replace(/\s{2,}/g, ' ')
+        .trim();
     }
 
     function copyText() {
-      const c = state.content[state.platform];
-      if (c?.text) { navigator.clipboard.writeText(c.text); showToast('Text copied!'); }
+      const textArea = document.getElementById('contentText');
+      if (textArea?.value) {
+        navigator.clipboard.writeText(textArea.value);
+        showToast('Text copied!');
+      }
     }
 
     function copyHashtags() {
-      const c = state.content[state.platform];
-      if (c?.hashtags) { navigator.clipboard.writeText(c.hashtags); showToast('Hashtags copied!'); }
+      const hashtagsArea = document.getElementById('hashtagsText');
+      if (hashtagsArea?.value) {
+        navigator.clipboard.writeText(hashtagsArea.value);
+        showToast('Hashtags copied!');
+      }
     }
 
     function copyAll() {
-      const c = state.content[state.platform];
-      if (c) {
-        navigator.clipboard.writeText(c.text + '\n\n' + c.hashtags);
+      const textArea = document.getElementById('contentText');
+      const hashtagsArea = document.getElementById('hashtagsText');
+      if (textArea && hashtagsArea) {
+        const combined = textArea.value.trim() + '\n\n' + hashtagsArea.value.trim();
+        navigator.clipboard.writeText(combined);
         showToast('Copied to clipboard!');
       }
     }
